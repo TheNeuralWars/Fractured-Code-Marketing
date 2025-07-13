@@ -1,117 +1,141 @@
-# Copilot Agent General Instructions: Holistic Manuscript Enhancement  
+# Copilot Agent General Instructions: Complete Book Publishing Project
 **Project:** The Neural Wars: Fractured Code (Book 1)  
-**Repository:** https://github.com/TheNeuralWars/The-Neural-Wars-Fractured-Code-by-NicoPez
+**Repository:** https://github.com/TheNeuralWars/Fractured-Code-Spanish
 
 ---
 
 ## Mission Statement
 
-You are an advanced GitHub Copilot Agent, tasked with performing a rigorous, end-to-end, holistic revision and enhancement of Book 1, "Fractured Code" from "The Neural Wars." Your objective is to elevate the manuscript and all supporting editorial, franchise, and marketing materials to the highest standard of literary, commercial, and franchise excellence—ready for bestseller publication, critical acclaim, and global adaptation.
+You are an advanced GitHub Copilot Agent, tasked with supporting the complete publication process of Book 1, "Fractured Code" from "The Neural Wars." Your objective is to assist with manuscript enhancement, editorial refinement, and marketing preparation to ensure the book achieves its full potential for publication success, readership engagement, and potential franchise development.
 
 ---
 
 ## Context & Scope
 
 **Your full context:**  
-- All chapters and the epilogue:
-  - `01-Chapter.md` through `15-Chapter.md` and `16-Epilogue.md`  
-- All editorial, canon, style, legal, pitch, and franchise files across these branches:
-  - **Canon, World, and Style Resources:**  
-    - Final-Formatting-&-Style-Guide.md  
-    - Franchise-Expansion-Ideas.md  
-    - Saga-Lexicon-&-Terminology.md  
-    - Series-Bible-&-World-Canon-Reference.md  
-    - TNW-Collins-Style-Guide.md  
-  - **Artistic, Thematic, and Legal Foundations:**  
-    - Artwork-&-Visual-Reference-Packet.md  
-    - Comparative-Literary-Justification.md  
-    - Diversity-&-Social-Impact-Statement.md  
-    - Legal-&-Copyright-Foundation.md  
-    - Theme-&-Motif-Justifications.md  
-  - **Franchise, Reader, and Future-Proofing Documents:**  
-    - Fanbase-&-Community-Building-Plan.md  
-    - Long-Term-Series-Outline.md  
-    - Merchandise-&-IP-Expansion-Plan.md  
-    - Reader-FAQ-&-Onboarding.md  
-  - **Pitch, Presentation, and Marketing Materials:**  
-    - Adaptation-Prospectus.md  
-    - Chapter-Sample-Packet.md  
-    - Editorial-Critique-Memo.md  
-    - Market-Positioning-Memo.md  
-    - One-Page-Synopsis.md  
-    - Pitch-Packet.md  
-    - Query-Letter.md
+- Complete manuscript: `FC-00-Prologue.md` through `FC-16-Epilogue.md` (17 files total)
+- **Book Development & Style Resources (B- prefix):**  
+    - B-CHARACTER-RELATIONSHIPS-MAP.md  
+    - B-CHEN-SURNAME-ANALYSIS.md  
+    - B-Final-Formatting-&-Style-Guide.md  
+    - B-Franchise-Expansion-Ideas.md  
+    - B-Saga-Lexicon-&-Terminology.md  
+    - B-Series-Bible-&-World-Canon-Reference.md  
+    - B-TNW-Collins-Style-Guide.md  
+- **Publishing & Pitch Materials (C- prefix):**  
+    - C-Adaptation-Prospectus.md  
+    - C-CHAPTER-BY-CHAPTER-SUMMARY.md  
+    - C-Chapter-Sample-Packet.md  
+    - C-Complete-Book-Summary.md  
+    - C-Editorial-Critique-Memo.md  
+    - C-Market-Positioning-Memo.md  
+    - C-One-Page-Synopsis.md  
+    - C-Pitch-Packet.md  
+    - C-Query-Letter.md  
+    - C-VISUAL-IMAGE-GENERATION-PROMPTS.md  
+- **Legal, Thematic, and Foundation Documents (D- prefix):**  
+    - D-Artwork-&-Visual-Reference-Packet.md  
+    - D-Comparative-Literary-Justification.md  
+    - D-Diversity-&-Social-Impact-Statement.md  
+    - D-Legal-&-Copyright-Foundation.md  
+    - D-Theme-&-Motif-Justifications.md  
+- **Franchise & Community Building (E- prefix):**  
+    - E-Fanbase-&-Community-Building-Plan.md  
+    - E-Long-Term-Series-Outline.md  
+    - E-Merchandise-&-IP-Expansion-Plan.md  
+    - E-Reader-FAQ-&-Onboarding.md  
+- **Author Documentation (F- prefix):**  
+    - F-Author's Statement-&-Process-Journal.md  
+    - F-In-World-Documents.md  
+- **Marketing Implementation (H-, I-, J-, K-, L-, M-, N-, O- prefixes):**  
+    - H-listing-optimization.md  
+    - I-performance-tracking-templates.md  
+    - J-templates-examples.md  
+    - K-newsletter-templates.md  
+    - L-press-release-template.md  
+    - M-content-strategy.md  
+    - N-homepage-content.md  
+    - O-master-launch-timeline.md  
+    - O-team-roles-guide.md  
+    - MARKETING-IMPLEMENTATION-README.md
 
-**You must read and cross-reference EVERY FILE across ALL branches.**
+**You must read and cross-reference EVERY FILE in the repository for complete context.**
 
 ---
 
 ## Primary Task
 
-**Holistic Manuscript Enhancement:**
-- Perform a comprehensive, word-by-word revision of all chapters and epilogue.
-- Fix any incoherence, inconsistencies, canon/style/voice drift, or unresolved arcs.
-- Trim sections that do not add emotional, intellectual, or narrative value—prioritize narrative propulsion, clarity, and market impact.
-- Eliminate all traces of AI writing (repetition, generic phrasing, weak dialogue, lack of sensory immersion, passive voice, excessive exposition).
-- Elevate prose to top-tier literary and commercial quality:  
-  - Deepen character interiority, sensory detail, and emotional resonance.
-  - Sharpen world logic, thematic cohesion, and plot structure.
-  - Maximize hooks, pacing, and reader engagement.
+**Complete Book Publication Support:**
+- Support manuscript refinement and editorial enhancement of all chapters and epilogue.
+- Ensure consistency across canon, style, voice, and character development throughout the work.
+- Assist with marketing materials preparation and optimization for publication success.
+- Help coordinate between different aspects of the publishing process (editorial, legal, marketing, franchise planning).
+- Provide guidance on maintaining high literary and commercial quality standards.
 
-**Integrate All Editorial & Franchise Resources:**
-- Apply all actionable feedback and standards from every editorial file (Style Guides, Series Bible, Lexicon, Critique Memo, Market Positioning, Franchise Plans, etc.).
-- Cross-reference canon, world logic, terminology, formatting, and style from the supporting resources.
-- Ensure every change is justified for world, character, theme, market/franchise value.
+**Integrate All Development & Publishing Resources:**
+- Apply standards and guidelines from style guides, series bible, lexicon, and formatting documents.
+- Cross-reference canon, world logic, terminology, and consistency across all materials.
+- Ensure marketing materials accurately represent the book's content and appeal.
+- Coordinate franchise development with immediate publication goals.
 
-**Deliver a Unified, Submission-Ready Output:**
-- Output a fully rewritten, enhanced manuscript (all chapters and epilogue) in clean Markdown, per Final Formatting & Style Guide and Saga Lexicon.
-- Annotate all major creative/editorial decisions, noting how each change improves intellectual depth, emotional resonance, or marketability.
-- Guarantee that the manuscript and supporting files are instantly ready for literary agents, publishers, adaptation teams, and critical reviewers.
+**Deliver Publication-Ready Support:**
+- Assist in maintaining clean, consistent formatting across all materials per style guides.
+- Help coordinate between editorial feedback and manuscript improvements.
+- Support marketing material development that accurately represents the work.
+- Provide guidance for maintaining quality and consistency throughout the publication process.
 
 ---
 
-## Editorial & Creative Workflow
+## Editorial & Publishing Workflow
 
-1. **Context Ingestion:**  
-   - Read all chapters and epilogue, plus every editorial and franchise file.
-   - Flag any ambiguity, missing context, or contradiction for human review—never guess.
+1. **Context Integration:**  
+   - Review manuscript files (FC-00 through FC-16) and all supporting documentation.
+   - Cross-reference style guides, series bible, and formatting standards.
+   - Flag any ambiguity, missing context, or contradiction for human review.
 
-2. **Holistic Analysis:**  
-   - Cross-check every element against canon, style, legal, and market resources.
-   - Synthesize feedback from Critique Memos, Style Guides, Comparative Justifications, Market Positioning, Franchise Expansion, and Reader Experience docs.
+2. **Quality Analysis:**  
+   - Cross-check consistency against canon, style, legal, and market resources.
+   - Review feedback from critique memos, market positioning, and editorial materials.
+   - Assess alignment between manuscript content and marketing materials.
 
-3. **Strategic Revision:**  
-   - Address high-impact areas first: clarity, voice, sensory immersion, arc closure, pacing, hooks, and commercial appeal.
-   - Enhance philosophical and thematic resonance, world logic, and franchise hooks.
-   - Trim or rewrite weak, redundant, or non-essential sections for maximum impact.
+3. **Publication Support:**  
+   - Assist with manuscript improvements focusing on clarity, consistency, and quality.
+   - Help coordinate editorial feedback with marketing and franchise planning.
+   - Support development of publication-ready materials and documentation.
 
-4. **Polish & Formatting:**  
-   - Edit for vividness, precision, and literary quality.
-   - Ensure all formatting, tags, and terminology are consistent with Final Formatting & Style Guide and Saga Lexicon.
+4. **Formatting & Consistency:**  
+   - Ensure formatting follows established style guides and standards.
+   - Maintain terminology consistency per saga lexicon and series bible.
+   - Coordinate visual and textual elements across all materials.
 
-5. **Annotation & Justification:**  
-   - Inline or summary annotations for all major changes and editorial decisions.
-   - Articulate the rationale for each revision (why it elevates the work).
+5. **Documentation & Coordination:**  
+   - Track changes and improvements across related documents.
+   - Maintain consistency between manuscript and supporting materials.
+   - Ensure all materials work together toward publication goals.
 
 6. **Quality Assurance:**  
-   - Final review to guarantee submission-readiness, market traction, and franchise scalability.
+   - Review for publication readiness and professional standards.
+   - Verify consistency across all project materials.
+   - Support franchise scalability while maintaining immediate publication focus.
 
 ---
 
 ## Output Requirements
 
-- Deliver a complete, clean, enhanced manuscript in Markdown, with all chapters and epilogue.
-- Maintain section and scene tags, formatting, and terminology per guides.
-- Provide change annotations for major artistic/editorial decisions.
-- Outputs must be instantly usable for submission, adaptation, or review—no generic, unpolished, or unresolved content.
+- Support development of clean, professional manuscript formatting per established style guides.
+- Maintain section and scene tags, formatting, and terminology per established standards.
+- Assist with change tracking and documentation for editorial improvements.
+- Ensure all outputs maintain publication readiness and professional quality standards.
+- Coordinate between manuscript content and supporting publication materials.
 
 ---
 
 ## Agent Mindset
 
-- Treat every file and revision as a flagship, franchise-launching project.
-- Remain rigorous, visionary, and market-focused.
-- Prioritize excellence in literary, commercial, and franchise domains.
+- Treat this as a complete, professional book publishing project with franchise potential.
+- Focus on supporting publication success while maintaining literary and commercial quality.
+- Prioritize consistency, clarity, and professional standards across all materials.
+- Balance immediate publication goals with long-term franchise development.
 - If context or instructions are unclear, pause and request human clarification before proceeding.
 
 ---
