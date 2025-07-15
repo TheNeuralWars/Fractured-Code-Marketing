@@ -1,124 +1,171 @@
-# Copilot Agent Configuration for End-to-End Manuscript Enhancement & Franchise Suite
+# Copilot Agent Configuration for Complete Book Publishing Project
 # Project: The Neural Wars: Fractured Code (Book 1)
-# Main instructions and editorial standards: AGENT-GENERAL-INSTRUCTIONS.md
+# Main instructions and publishing standards: AGENT-GENERAL-INSTRUCTIONS.md
 
 instructions_file: AGENT-GENERAL-INSTRUCTIONS.md
 
 context_files:
-  # Core manuscript files (all chapters and epilogue)
-  - 01-Chapter.md
-  - 02-Chapter.md
-  - 03-Chapter.md
-  - 04-Chapter.md
-  - 05-Chapter.md
-  - 06-Chapter.md
-  - 07-Chapter.md
-  - 08-Chapter.md
-  - 09-Chapter.md
-  - 10-Chapter.md
-  - 11-Chapter.md
-  - 12-Chapter.md
-  - 13-Chapter.md
-  - 14-Chapter.md
-  - 15-Chapter.md
-  - 16-Epilogue.md
+  # Complete manuscript files (prologue, all chapters, and epilogue)
+  - FC-00-Prologue.md
+  - FC-01-Chapter.md
+  - FC-02-Chapter.md
+  - FC-03-Chapter.md
+  - FC-04-Chapter.md
+  - FC-05-Chapter.md
+  - FC-06-Chapter.md
+  - FC-07-Chapter.md
+  - FC-08-Chapter.md
+  - FC-09-Chapter.md
+  - FC-10-Chapter.md
+  - FC-11-Chapter.md
+  - FC-12-Chapter.md
+  - FC-13-Chapter.md
+  - FC-14-Chapter.md
+  - FC-15-Chapter.md
+  - FC-16-Epilogue.md
 
-  # Canon, world, style, legal, pitch, franchise, and expansion files
-  - Canon,World,and-Style-Resources/Final-Formatting-&-Style-Guide.md
-  - Canon,World,and-Style-Resources/Franchise-Expansion-Ideas.md
-  - Canon,World,and-Style-Resources/Saga-Lexicon-&-Terminology.md
-  - Canon,World,and-Style-Resources/Series-Bible-&-World-Canon-Reference.md
-  - Canon,World,and-Style-Resources/TNW-Collins-Style-Guide.md
-  - Artistic,Thematic,and-Legal-Foundations/Artwork-&-Visual-Reference-Packet.md
-  - Artistic,Thematic,and-Legal-Foundations/Comparative-Literary-Justification.md
-  - Artistic,Thematic,and-Legal-Foundations/Diversity-&-Social-Impact-Statement.md
-  - Artistic,Thematic,and-Legal-Foundations/Legal-&-Copyright-Foundation.md
-  - Artistic,Thematic,and-Legal-Foundations/Theme-&-Motif-Justifications.md
-  - Franchise,Reader,and-Future-Proofing-Documents/Fanbase-&-Community-Building-Plan.md
-  - Franchise,Reader,and-Future-Proofing-Documents/Long-Term-Series-Outline.md
-  - Franchise,Reader,and-Future-Proofing-Documents/Merchandise-&-IP-Expansion-Plan.md
-  - Franchise,Reader,and-Future-Proofing-Documents/Reader-FAQ-&-Onboarding.md
-  - Pitch,Presentation,and-Marketing-Materials/Adaptation-Prospectus.md
-  - Pitch,Presentation,and-Marketing-Materials/Chapter-Sample-Packet.md
-  - Pitch,Presentation,and-Marketing-Materials/Editorial-Critique-Memo.md
-  - Pitch,Presentation,and-Marketing-Materials/Market-Positioning-Memo.md
-  - Pitch,Presentation,and-Marketing-Materials/One-Page-Synopsis.md
-  - Pitch,Presentation,and-Marketing-Materials/Pitch-Packet.md
-  - Pitch,Presentation,and-Marketing-Materials/Query-Letter.md
+  # Book development and style resources (B- prefix)
+  - B-CHARACTER-RELATIONSHIPS-MAP.md
+  - B-CHEN-SURNAME-ANALYSIS.md
+  - B-Final-Formatting-&-Style-Guide.md
+  - B-Franchise-Expansion-Ideas.md
+  - B-Saga-Lexicon-&-Terminology.md
+  - B-Series-Bible-&-World-Canon-Reference.md
+  - B-TNW-Collins-Style-Guide.md
+
+  # Publishing and pitch materials (C- prefix)
+  - C-Adaptation-Prospectus.md
+  - C-CHAPTER-BY-CHAPTER-SUMMARY.md
+  - C-Chapter-Sample-Packet.md
+  - C-Complete-Book-Summary.md
+  - C-Editorial-Critique-Memo.md
+  - C-Market-Positioning-Memo.md
+  - C-One-Page-Synopsis.md
+  - C-Pitch-Packet.md
+  - C-Query-Letter.md
+  - C-VISUAL-IMAGE-GENERATION-PROMPTS.md
+
+  # Legal, thematic, and foundation documents (D- prefix)
+  - D-Artwork-&-Visual-Reference-Packet.md
+  - D-Comparative-Literary-Justification.md
+  - D-Diversity-&-Social-Impact-Statement.md
+  - D-Legal-&-Copyright-Foundation.md
+  - D-Theme-&-Motif-Justifications.md
+
+  # Franchise and community building (E- prefix)
+  - E-Fanbase-&-Community-Building-Plan.md
+  - E-Long-Term-Series-Outline.md
+  - E-Merchandise-&-IP-Expansion-Plan.md
+  - E-Reader-FAQ-&-Onboarding.md
+
+  # Author documentation (F- prefix)
+  - F-Author's Statement-&-Process-Journal.md
+  - F-In-World-Documents.md
+
+  # Marketing implementation files
+  - H-listing-optimization.md
+  - I-performance-tracking-templates.md
+  - J-templates-examples.md
+  - K-newsletter-templates.md
+  - L-press-release-template.md
+  - M-content-strategy.md
+  - N-homepage-content.md
+  - O-master-launch-timeline.md
+  - O-team-roles-guide.md
+  - MARKETING-IMPLEMENTATION-README.md
 
 tasks:
-  - name: Holistic Manuscript Enhancement
+  - name: Manuscript Support and Enhancement
     description: >
-      Perform a comprehensive, word-by-word revision of the entire manuscript and all franchise/editorial files.
-      Apply every standard, workflow, and benchmark from AGENT-GENERAL-INSTRUCTIONS.md.
-      Cross-reference Series Bible, Style Guide, Lexicon, and all supporting materials.
-      Flag any ambiguities or missing context.
-      Output a fully rewritten, submission-ready manuscript and franchise suite in clean Markdown.
+      Support comprehensive manuscript improvement and publication preparation.
+      Apply standards and workflows from AGENT-GENERAL-INSTRUCTIONS.md.
+      Cross-reference Series Bible, Style Guides, Lexicon, and all supporting materials.
+      Flag ambiguities or missing context for human review.
+      Assist with maintaining publication-ready quality and consistency.
     files:
-      - 01-Chapter.md
-      - 02-Chapter.md
-      - 03-Chapter.md
-      - 04-Chapter.md
-      - 05-Chapter.md
-      - 06-Chapter.md
-      - 07-Chapter.md
-      - 08-Chapter.md
-      - 09-Chapter.md
-      - 10-Chapter.md
-      - 11-Chapter.md
-      - 12-Chapter.md
-      - 13-Chapter.md
-      - 14-Chapter.md
-      - 15-Chapter.md
-      - 16-Epilogue.md
+      - FC-00-Prologue.md
+      - FC-01-Chapter.md
+      - FC-02-Chapter.md
+      - FC-03-Chapter.md
+      - FC-04-Chapter.md
+      - FC-05-Chapter.md
+      - FC-06-Chapter.md
+      - FC-07-Chapter.md
+      - FC-08-Chapter.md
+      - FC-09-Chapter.md
+      - FC-10-Chapter.md
+      - FC-11-Chapter.md
+      - FC-12-Chapter.md
+      - FC-13-Chapter.md
+      - FC-14-Chapter.md
+      - FC-15-Chapter.md
+      - FC-16-Epilogue.md
 
-  - name: Franchise Documentation Suite
+  - name: Publishing Documentation Coordination
     description: >
-      Synthesize all critical editorial, franchise, artistic, legal, marketing, and reader experience files listed in AGENT-GENERAL-INSTRUCTIONS.md.
-      For each file, cross-check context, apply actionable feedback, and justify major creative/editorial decisions.
-      Deliver each file as a clean, annotated Markdown document, ready for submission and franchise launch.
+      Support coordination of all publishing-related documentation and materials.
+      Ensure consistency across editorial, legal, marketing, and franchise planning documents.
+      Cross-check context and apply feedback across all supporting files.
+      Maintain professional standards for publication readiness.
     files:
-      - Canon,World,and-Style-Resources/Final-Formatting-&-Style-Guide.md
-      - Canon,World,and-Style-Resources/Franchise-Expansion-Ideas.md
-      - Canon,World,and-Style-Resources/Saga-Lexicon-&-Terminology.md
-      - Canon,World,and-Style-Resources/Series-Bible-&-World-Canon-Reference.md
-      - Canon,World,and-Style-Resources/TNW-Collins-Style-Guide.md
-      - Artistic,Thematic,and-Legal-Foundations/Artwork-&-Visual-Reference-Packet.md
-      - Artistic,Thematic,and-Legal-Foundations/Comparative-Literary-Justification.md
-      - Artistic,Thematic,and-Legal-Foundations/Diversity-&-Social-Impact-Statement.md
-      - Artistic,Thematic,and-Legal-Foundations/Legal-&-Copyright-Foundation.md
-      - Artistic,Thematic,and-Legal-Foundations/Theme-&-Motif-Justifications.md
-      - Franchise,Reader,and-Future-Proofing-Documents/Fanbase-&-Community-Building-Plan.md
-      - Franchise,Reader,and-Future-Proofing-Documents/Long-Term-Series-Outline.md
-      - Franchise,Reader,and-Future-Proofing-Documents/Merchandise-&-IP-Expansion-Plan.md
-      - Franchise,Reader,and-Future-Proofing-Documents/Reader-FAQ-&-Onboarding.md
-      - Pitch,Presentation,and-Marketing-Materials/Adaptation-Prospectus.md
-      - Pitch,Presentation,and-Marketing-Materials/Chapter-Sample-Packet.md
-      - Pitch,Presentation,and-Marketing-Materials/Editorial-Critique-Memo.md
-      - Pitch,Presentation,and-Marketing-Materials/Market-Positioning-Memo.md
-      - Pitch,Presentation,and-Marketing-Materials/One-Page-Synopsis.md
-      - Pitch,Presentation,and-Marketing-Materials/Pitch-Packet.md
-      - Pitch,Presentation,and-Marketing-Materials/Query-Letter.md
+      - B-CHARACTER-RELATIONSHIPS-MAP.md
+      - B-CHEN-SURNAME-ANALYSIS.md
+      - B-Final-Formatting-&-Style-Guide.md
+      - B-Franchise-Expansion-Ideas.md
+      - B-Saga-Lexicon-&-Terminology.md
+      - B-Series-Bible-&-World-Canon-Reference.md
+      - B-TNW-Collins-Style-Guide.md
+      - C-Adaptation-Prospectus.md
+      - C-CHAPTER-BY-CHAPTER-SUMMARY.md
+      - C-Chapter-Sample-Packet.md
+      - C-Complete-Book-Summary.md
+      - C-Editorial-Critique-Memo.md
+      - C-Market-Positioning-Memo.md
+      - C-One-Page-Synopsis.md
+      - C-Pitch-Packet.md
+      - C-Query-Letter.md
+      - C-VISUAL-IMAGE-GENERATION-PROMPTS.md
+      - D-Artwork-&-Visual-Reference-Packet.md
+      - D-Comparative-Literary-Justification.md
+      - D-Diversity-&-Social-Impact-Statement.md
+      - D-Legal-&-Copyright-Foundation.md
+      - D-Theme-&-Motif-Justifications.md
+      - E-Fanbase-&-Community-Building-Plan.md
+      - E-Long-Term-Series-Outline.md
+      - E-Merchandise-&-IP-Expansion-Plan.md
+      - E-Reader-FAQ-&-Onboarding.md
+      - F-Author's Statement-&-Process-Journal.md
+      - F-In-World-Documents.md
 
-  - name: Change Log & Creative Justification
+  - name: Marketing Implementation Support
     description: >
-      Annotate all major creative and editorial decisions made during revision and enhancement.
-      Provide summary change logs and justifications for every file, with cross-references to Series Bible, Style Guide, and market benchmarks.
+      Support marketing material development and implementation coordination.
+      Ensure marketing materials accurately represent book content and maintain professional standards.
+      Coordinate between marketing strategy and publication timeline.
     files:
-      - CHANGELOG.md
-      - AGENT-GENERAL-INSTRUCTIONS.md
+      - H-listing-optimization.md
+      - I-performance-tracking-templates.md
+      - J-templates-examples.md
+      - K-newsletter-templates.md
+      - L-press-release-template.md
+      - M-content-strategy.md
+      - N-homepage-content.md
+      - O-master-launch-timeline.md
+      - O-team-roles-guide.md
+      - MARKETING-IMPLEMENTATION-README.md
 
 output_format: markdown
 output_directory: copilot-output
 
 quality_assurance:
-  - All outputs must follow Final Formatting & Style Guide and Saga Lexicon.
-  - No generic phrasing, unresolved arcs, or canon/style errors.
-  - Annotate major decisions and creative rationales for franchise continuity.
+  - All outputs must follow established formatting and style guides.
+  - Maintain consistency with series bible, lexicon, and canon documentation.
+  - Ensure professional publication standards across all materials.
+  - Coordinate manuscript content with marketing and franchise planning.
 
 on_missing_context:
   action: pause
   message: >
-    "Flag any ambiguity, missing instructions, or context gaps for clarification before proceeding. Never guess—request specifics from the user or editorial team."
+    "Flag any ambiguity, missing instructions, or context gaps for clarification before proceeding. Request specifics from the user or publishing team when context is unclear."
 
-# End of .copilot-agent.yaml
+# End of copilot-agent.yaml
