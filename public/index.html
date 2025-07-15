@@ -260,6 +260,9 @@
                             <button class="btn btn-primary" data-export="templates" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
                             </button>
+                            <button class="btn btn-primary" data-export="templates" data-format="plain">
+                                <i class="fas fa-file-alt"></i> Plain Text
+                            </button>
                         </div>
                     </div>
 
@@ -277,12 +280,74 @@
                             <button class="btn btn-primary" data-export="tasks" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
                             </button>
+                            <button class="btn btn-primary" data-export="tasks" data-format="plain">
+                                <i class="fas fa-file-alt"></i> Plain Text
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card export-dashboard">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Export Dashboard</h3>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-primary" data-export="dashboard" data-format="json">
+                                <i class="fas fa-code"></i> JSON
+                            </button>
+                            <button class="btn btn-primary" data-export="dashboard" data-format="csv">
+                                <i class="fas fa-table"></i> CSV
+                            </button>
+                            <button class="btn btn-primary" data-export="dashboard" data-format="markdown">
+                                <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                            <button class="btn btn-primary" data-export="dashboard" data-format="plain">
+                                <i class="fas fa-file-alt"></i> Plain Text
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card export-team">
+                        <div class="card-header">
+                            <h3><i class="fas fa-users"></i> Export Team Data</h3>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-primary" data-export="team" data-format="json">
+                                <i class="fas fa-code"></i> JSON
+                            </button>
+                            <button class="btn btn-primary" data-export="team" data-format="csv">
+                                <i class="fas fa-table"></i> CSV
+                            </button>
+                            <button class="btn btn-primary" data-export="team" data-format="markdown">
+                                <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                            <button class="btn btn-primary" data-export="team" data-format="plain">
+                                <i class="fas fa-file-alt"></i> Plain Text
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card export-all">
+                        <div class="card-header">
+                            <h3><i class="fas fa-archive"></i> Export Complete Campaign</h3>
+                            <p class="card-description">Export all data including templates, tasks, dashboard metrics, and team information</p>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-primary" data-export="all" data-format="json">
+                                <i class="fas fa-code"></i> Complete JSON
+                            </button>
+                            <button class="btn btn-primary" data-export="all" data-format="markdown">
+                                <i class="fas fa-markdown"></i> Complete Markdown
+                            </button>
+                            <button class="btn btn-primary" data-export="all" data-format="plain">
+                                <i class="fas fa-file-alt"></i> Complete Plain Text
+                            </button>
                         </div>
                     </div>
 
                     <div class="card external-integrations">
                         <div class="card-header">
                             <h3><i class="fas fa-plug"></i> External Integrations</h3>
+                            <p class="card-description">Prepare your data for integration with popular productivity tools</p>
                         </div>
                         <div class="integration-options">
                             <button class="btn btn-secondary" data-integration="google-workspace">
@@ -293,6 +358,42 @@
                             </button>
                             <button class="btn btn-secondary" data-integration="slack">
                                 <i class="fab fa-slack"></i> Slack
+                            </button>
+                            <button class="btn btn-secondary" data-integration="mailchimp">
+                                <i class="fab fa-mailchimp"></i> Mailchimp
+                            </button>
+                            <button class="btn btn-secondary" data-integration="buffer">
+                                <i class="fas fa-share-square"></i> Buffer
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card export-automation">
+                        <div class="card-header">
+                            <h3><i class="fas fa-robot"></i> Export Automation</h3>
+                            <p class="card-description">Set up automated exports and data synchronization</p>
+                        </div>
+                        <div class="automation-options">
+                            <div class="automation-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="auto-export-daily">
+                                    Daily task export to CSV
+                                </label>
+                            </div>
+                            <div class="automation-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="auto-export-weekly">
+                                    Weekly progress report
+                                </label>
+                            </div>
+                            <div class="automation-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="auto-backup">
+                                    Auto-backup all data (JSON)
+                                </label>
+                            </div>
+                            <button class="btn btn-primary" onclick="exportManager.setupAutomation()">
+                                <i class="fas fa-cog"></i> Configure Automation
                             </button>
                         </div>
                     </div>
