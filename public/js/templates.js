@@ -21,6 +21,15 @@ class TemplateManager {
                 this.copyToClipboard(e.target);
             }
         });
+
+        // Setup form submission for template generator
+        const form = document.getElementById('template-generator-form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.generateTemplateContent();
+            });
+        }
     }
 
     async loadTemplates() {
@@ -245,6 +254,9 @@ class TemplateManager {
         const modal = document.getElementById('template-modal');
         const templateTypeSelect = document.getElementById('template-type');
         
+        // Populate template options
+        this.populateTemplateOptions();
+        
         if (template) {
             // Pre-select the template
             templateTypeSelect.value = template.key;
@@ -252,6 +264,32 @@ class TemplateManager {
         }
         
         modal.classList.remove('hidden');
+    }
+
+    populateTemplateOptions() {
+        const templateTypeSelect = document.getElementById('template-type');
+        if (!templateTypeSelect) return;
+        
+        const options = ['<option value="">Select a template type...</option>'];
+        
+        // Add all available templates as options
+        Object.values(this.categorizedTemplates).forEach(category => {
+            if (category.templates) {
+                category.templates.forEach(template => {
+                    options.push(`<option value="${template.key}">${template.title}</option>`);
+                });
+            }
+        });
+        
+        templateTypeSelect.innerHTML = options.join('');
+        
+        // Add event listener for template type changes
+        templateTypeSelect.onchange = () => {
+            const selectedKey = templateTypeSelect.value;
+            if (selectedKey) {
+                this.loadTemplateSections(selectedKey);
+            }
+        };
     }
 
     async loadTemplateSections(templateKey) {

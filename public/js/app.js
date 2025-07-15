@@ -487,26 +487,32 @@ function refreshMetrics() {
 }
 
 function filterTasks() {
-    const personFilter = document.getElementById('person-filter').value;
-    const dayFilter = document.getElementById('day-filter').value;
-    
-    // Apply filters to task display
-    document.querySelectorAll('.person-tasks').forEach(section => {
-        const personId = section.id.replace('-tasks', '');
-        const shouldShow = personFilter === 'all' || personFilter === personId;
-        section.style.display = shouldShow ? 'block' : 'none';
-    });
-
-    // Filter by day within visible sections
-    document.querySelectorAll('.task-item').forEach(task => {
-        const taskDay = task.querySelector('.task-day').textContent;
-        const shouldShow = dayFilter === 'all' || dayFilter === taskDay;
-        task.style.display = shouldShow ? 'block' : 'none';
-    });
+    // Use the proper task manager filtering if available
+    if (window.taskManager) {
+        const personFilter = document.getElementById('person-filter').value;
+        const dayFilter = document.getElementById('day-filter').value;
+        
+        console.log('Setting filters:', { person: personFilter, day: dayFilter });
+        
+        taskManager.currentFilter = {
+            person: personFilter,
+            day: dayFilter
+        };
+        
+        console.log('TaskManager currentFilter set to:', taskManager.currentFilter);
+        taskManager.renderTasks();
+    } else {
+        console.error('TaskManager not available');
+    }
 }
 
 function showTemplateGenerator() {
-    app.showModal('template-modal');
+    if (window.templateManager) {
+        templateManager.openTemplateGenerator();
+    } else {
+        // Fallback to basic modal opening
+        app.showModal('template-modal');
+    }
 }
 
 function closeModal(modalId) {

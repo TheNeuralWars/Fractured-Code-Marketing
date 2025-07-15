@@ -60,6 +60,10 @@ class TaskManager {
     filterTasks(tasks) {
         return tasks.filter(task => {
             const dayMatch = this.currentFilter.day === 'all' || task.day === this.currentFilter.day;
+            // Debug logging
+            if (this.currentFilter.day !== 'all') {
+                console.log(`Filtering: currentFilter.day="${this.currentFilter.day}", task.day="${task.day}", match=${dayMatch}`);
+            }
             return dayMatch;
         });
     }
