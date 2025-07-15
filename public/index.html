@@ -36,7 +36,7 @@
                     </a>
                 </div>
                 <div class="nav-status">
-                    <button class="theme-toggle" onclick="toggleTheme()">
+                    <button class="theme-toggle" id="theme-toggle">
                         <i class="fas fa-moon" id="theme-icon"></i>
                         <span id="theme-text">Dark</span>
                     </button>
@@ -63,7 +63,7 @@
                     <div class="card metrics-overview">
                         <div class="card-header">
                             <h3><i class="fas fa-chart-line"></i> Key Metrics</h3>
-                            <button class="btn btn-small" onclick="refreshMetrics()">
+                            <button class="btn btn-small" id="refresh-metrics">
                                 <i class="fas fa-sync-alt"></i> Refresh
                             </button>
                         </div>
@@ -124,13 +124,13 @@
                 <div class="tasks-header">
                     <h1>Daily Task Management</h1>
                     <div class="task-filters">
-                        <select id="person-filter" onchange="filterTasks()">
+                        <select id="person-filter">
                             <option value="all">All Team Members</option>
                             <option value="person1">Content Creator</option>
                             <option value="person2">Community Manager</option>
                             <option value="person3">Analytics Coordinator</option>
                         </select>
-                        <select id="day-filter" onchange="filterTasks()">
+                        <select id="day-filter">
                             <option value="all">All Days</option>
                             <option value="monday">Monday</option>
                             <option value="tuesday">Tuesday</option>
@@ -173,7 +173,7 @@
                 <div class="templates-header">
                     <h1>Marketing Templates</h1>
                     <div class="template-actions">
-                        <button class="btn btn-primary" onclick="showTemplateGenerator()">
+                        <button class="btn btn-primary" id="show-template-generator">
                             <i class="fas fa-plus"></i> Generate Content
                         </button>
                     </div>
@@ -251,13 +251,13 @@
                             <h3><i class="fas fa-file-export"></i> Export Templates</h3>
                         </div>
                         <div class="export-options">
-                            <button class="btn btn-primary" onclick="exportData('templates', 'json')">
+                            <button class="btn btn-primary" data-export="templates" data-format="json">
                                 <i class="fas fa-code"></i> JSON
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('templates', 'csv')">
+                            <button class="btn btn-primary" data-export="templates" data-format="csv">
                                 <i class="fas fa-table"></i> CSV
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('templates', 'markdown')">
+                            <button class="btn btn-primary" data-export="templates" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
                             </button>
                         </div>
@@ -268,13 +268,13 @@
                             <h3><i class="fas fa-tasks"></i> Export Tasks</h3>
                         </div>
                         <div class="export-options">
-                            <button class="btn btn-primary" onclick="exportData('tasks', 'json')">
+                            <button class="btn btn-primary" data-export="tasks" data-format="json">
                                 <i class="fas fa-code"></i> JSON
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('tasks', 'csv')">
+                            <button class="btn btn-primary" data-export="tasks" data-format="csv">
                                 <i class="fas fa-table"></i> CSV
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('tasks', 'markdown')">
+                            <button class="btn btn-primary" data-export="tasks" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
                             </button>
                         </div>
@@ -285,13 +285,13 @@
                             <h3><i class="fas fa-plug"></i> External Integrations</h3>
                         </div>
                         <div class="integration-options">
-                            <button class="btn btn-secondary" onclick="integrateExternal('google-workspace')">
+                            <button class="btn btn-secondary" data-integration="google-workspace">
                                 <i class="fab fa-google"></i> Google Workspace
                             </button>
-                            <button class="btn btn-secondary" onclick="integrateExternal('asana')">
+                            <button class="btn btn-secondary" data-integration="asana">
                                 <i class="fas fa-project-diagram"></i> Asana
                             </button>
-                            <button class="btn btn-secondary" onclick="integrateExternal('slack')">
+                            <button class="btn btn-secondary" data-integration="slack">
                                 <i class="fab fa-slack"></i> Slack
                             </button>
                         </div>
@@ -313,7 +313,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Generate Content from Template</h3>
-                    <button class="modal-close" onclick="closeModal('template-modal')">
+                    <button class="modal-close" id="modal-close-btn">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -341,7 +341,7 @@
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Generate Content</button>
-                            <button type="button" class="btn btn-secondary" onclick="closeModal('template-modal')">Cancel</button>
+                            <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
                         </div>
                     </form>
                 </div>

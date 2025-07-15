@@ -487,26 +487,27 @@ function refreshMetrics() {
 }
 
 function filterTasks() {
-    const personFilter = document.getElementById('person-filter').value;
-    const dayFilter = document.getElementById('day-filter').value;
-    
-    // Apply filters to task display
-    document.querySelectorAll('.person-tasks').forEach(section => {
-        const personId = section.id.replace('-tasks', '');
-        const shouldShow = personFilter === 'all' || personFilter === personId;
-        section.style.display = shouldShow ? 'block' : 'none';
-    });
-
-    // Filter by day within visible sections
-    document.querySelectorAll('.task-item').forEach(task => {
-        const taskDay = task.querySelector('.task-day').textContent;
-        const shouldShow = dayFilter === 'all' || dayFilter === taskDay;
-        task.style.display = shouldShow ? 'block' : 'none';
-    });
+    // Use the proper task manager filtering if available
+    if (window.taskManager) {
+        const personFilter = document.getElementById('person-filter').value;
+        const dayFilter = document.getElementById('day-filter').value;
+        
+        taskManager.currentFilter = {
+            person: personFilter,
+            day: dayFilter
+        };
+        
+        taskManager.renderTasks();
+    }
 }
 
 function showTemplateGenerator() {
-    app.showModal('template-modal');
+    if (window.templateManager) {
+        templateManager.openTemplateGenerator();
+    } else {
+        // Fallback to basic modal opening
+        app.showModal('template-modal');
+    }
 }
 
 function closeModal(modalId) {
@@ -563,4 +564,67 @@ function toggleTheme() {
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new NeuralWarsApp();
+    
+    // Set up event listeners for UI elements
+    setupEventListeners();
 });
+
+function setupEventListeners() {
+    // Filter event listeners
+    const personFilter = document.getElementById('person-filter');
+    const dayFilter = document.getElementById('day-filter');
+    
+    if (personFilter) {
+        personFilter.addEventListener('change', filterTasks);
+    }
+    
+    if (dayFilter) {
+        dayFilter.addEventListener('change', filterTasks);
+    }
+    
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    // Refresh metrics
+    const refreshBtn = document.getElementById('refresh-metrics');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', refreshMetrics);
+    }
+    
+    // Template generator
+    const templateGenBtn = document.getElementById('show-template-generator');
+    if (templateGenBtn) {
+        templateGenBtn.addEventListener('click', showTemplateGenerator);
+    }
+    
+    // Modal close buttons
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
+    
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', () => closeModal('template-modal'));
+    }
+    
+    if (modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', () => closeModal('template-modal'));
+    }
+    
+    // Export buttons
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('[data-export]')) {
+            const button = e.target.closest('[data-export]');
+            const type = button.dataset.export;
+            const format = button.dataset.format;
+            exportData(type, format);
+        }
+        
+        if (e.target.closest('[data-integration]')) {
+            const button = e.target.closest('[data-integration]');
+            const service = button.dataset.integration;
+            integrateExternal(service);
+        }
+    });
+}
