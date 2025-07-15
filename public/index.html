@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Wars Marketing Automation</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-brain"></i>
+                    <span>Neural Wars Marketing</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#dashboard" class="nav-link active" data-tab="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="#tasks" class="nav-link" data-tab="tasks">
+                        <i class="fas fa-tasks"></i> Tasks
+                    </a>
+                    <a href="#templates" class="nav-link" data-tab="templates">
+                        <i class="fas fa-file-alt"></i> Templates
+                    </a>
+                    <a href="#team" class="nav-link" data-tab="team">
+                        <i class="fas fa-users"></i> Team
+                    </a>
+                    <a href="#export" class="nav-link" data-tab="export">
+                        <i class="fas fa-download"></i> Export
+                    </a>
+                </div>
+                <div class="nav-status">
+                    <span class="status-indicator online"></span>
+                    <span>Campaign Active</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content active">
+                <div class="dashboard-header">
+                    <h1>Marketing Campaign Dashboard</h1>
+                    <div class="campaign-status">
+                        <span class="phase-badge" id="current-phase">Foundation Phase</span>
+                        <span class="days-counter" id="days-until-launch">90 days until launch</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Key Metrics -->
+                    <div class="card metrics-overview">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Key Metrics</h3>
+                            <button class="btn btn-small" onclick="refreshMetrics()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <div class="metric-value" id="sales-rank">#--</div>
+                                <div class="metric-label">Amazon BSR</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="total-sales">--</div>
+                                <div class="metric-label">Total Sales</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="review-count">--</div>
+                                <div class="metric-label">Reviews</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="email-subscribers">--</div>
+                                <div class="metric-label">Email Subscribers</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Status -->
+                    <div class="card team-status">
+                        <div class="card-header">
+                            <h3><i class="fas fa-users"></i> Team Status</h3>
+                        </div>
+                        <div class="team-members" id="team-status-list">
+                            <!-- Team status will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Weekly Progress -->
+                    <div class="card weekly-progress">
+                        <div class="card-header">
+                            <h3><i class="fas fa-calendar-week"></i> Weekly Progress</h3>
+                        </div>
+                        <div class="progress-overview" id="weekly-progress-content">
+                            <!-- Progress content will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card recent-activity">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                        </div>
+                        <div class="activity-list" id="recent-activity-list">
+                            <!-- Activity items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Tab -->
+            <div id="tasks-tab" class="tab-content">
+                <div class="tasks-header">
+                    <h1>Daily Task Management</h1>
+                    <div class="task-filters">
+                        <select id="person-filter" onchange="filterTasks()">
+                            <option value="all">All Team Members</option>
+                            <option value="person1">Content Creator</option>
+                            <option value="person2">Community Manager</option>
+                            <option value="person3">Analytics Coordinator</option>
+                        </select>
+                        <select id="day-filter" onchange="filterTasks()">
+                            <option value="all">All Days</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tasks-grid">
+                    <!-- Person 1 Tasks -->
+                    <div class="person-tasks" id="person1-tasks">
+                        <h3><i class="fas fa-paintbrush"></i> Content Creator & Visual Designer</h3>
+                        <div class="task-list" id="person1-task-list">
+                            <!-- Tasks will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Person 2 Tasks -->
+                    <div class="person-tasks" id="person2-tasks">
+                        <h3><i class="fas fa-bullhorn"></i> Social Engagement & Community Manager</h3>
+                        <div class="task-list" id="person2-task-list">
+                            <!-- Tasks will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Person 3 Tasks -->
+                    <div class="person-tasks" id="person3-tasks">
+                        <h3><i class="fas fa-chart-bar"></i> Analytics, Advertising & Strategic Coordination</h3>
+                        <div class="task-list" id="person3-task-list">
+                            <!-- Tasks will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates Tab -->
+            <div id="templates-tab" class="tab-content">
+                <div class="templates-header">
+                    <h1>Marketing Templates</h1>
+                    <div class="template-actions">
+                        <button class="btn btn-primary" onclick="showTemplateGenerator()">
+                            <i class="fas fa-plus"></i> Generate Content
+                        </button>
+                    </div>
+                </div>
+
+                <div class="templates-grid">
+                    <div class="template-category" id="social-templates">
+                        <h3><i class="fas fa-share-alt"></i> Social Media Templates</h3>
+                        <div class="template-list" id="social-template-list">
+                            <!-- Templates will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="template-category" id="email-templates">
+                        <h3><i class="fas fa-envelope"></i> Email Templates</h3>
+                        <div class="template-list" id="email-template-list">
+                            <!-- Templates will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="template-category" id="press-templates">
+                        <h3><i class="fas fa-newspaper"></i> Press & Media Templates</h3>
+                        <div class="template-list" id="press-template-list">
+                            <!-- Templates will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Tab -->
+            <div id="team-tab" class="tab-content">
+                <div class="team-header">
+                    <h1>Team Coordination</h1>
+                    <div class="team-actions">
+                        <button class="btn btn-primary" onclick="logMeeting()">
+                            <i class="fas fa-calendar-plus"></i> Log Meeting
+                        </button>
+                        <button class="btn btn-secondary" onclick="updateStatus()">
+                            <i class="fas fa-edit"></i> Update Status
+                        </button>
+                    </div>
+                </div>
+
+                <div class="team-grid">
+                    <div class="card team-roles">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user-friends"></i> Team Roles & Responsibilities</h3>
+                        </div>
+                        <div class="roles-content" id="team-roles-content">
+                            <!-- Roles content will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="card meeting-log">
+                        <div class="card-header">
+                            <h3><i class="fas fa-comments"></i> Meeting Log</h3>
+                        </div>
+                        <div class="meetings-list" id="meetings-list">
+                            <!-- Meetings will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Tab -->
+            <div id="export-tab" class="tab-content">
+                <div class="export-header">
+                    <h1>Export & Integration</h1>
+                    <p>Export your marketing data to various formats and integrate with external tools.</p>
+                </div>
+
+                <div class="export-grid">
+                    <div class="card export-templates">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-export"></i> Export Templates</h3>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-primary" onclick="exportData('templates', 'json')">
+                                <i class="fas fa-code"></i> JSON
+                            </button>
+                            <button class="btn btn-primary" onclick="exportData('templates', 'csv')">
+                                <i class="fas fa-table"></i> CSV
+                            </button>
+                            <button class="btn btn-primary" onclick="exportData('templates', 'markdown')">
+                                <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card export-tasks">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tasks"></i> Export Tasks</h3>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-primary" onclick="exportData('tasks', 'json')">
+                                <i class="fas fa-code"></i> JSON
+                            </button>
+                            <button class="btn btn-primary" onclick="exportData('tasks', 'csv')">
+                                <i class="fas fa-table"></i> CSV
+                            </button>
+                            <button class="btn btn-primary" onclick="exportData('tasks', 'markdown')">
+                                <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card external-integrations">
+                        <div class="card-header">
+                            <h3><i class="fas fa-plug"></i> External Integrations</h3>
+                        </div>
+                        <div class="integration-options">
+                            <button class="btn btn-secondary" onclick="integrateExternal('google-workspace')">
+                                <i class="fab fa-google"></i> Google Workspace
+                            </button>
+                            <button class="btn btn-secondary" onclick="integrateExternal('asana')">
+                                <i class="fas fa-project-diagram"></i> Asana
+                            </button>
+                            <button class="btn btn-secondary" onclick="integrateExternal('slack')">
+                                <i class="fab fa-slack"></i> Slack
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading...</p>
+            </div>
+        </div>
+
+        <!-- Modal for Template Generator -->
+        <div id="template-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Generate Content from Template</h3>
+                    <button class="modal-close" onclick="closeModal('template-modal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="template-generator-form">
+                        <div class="form-group">
+                            <label for="template-type">Template Type:</label>
+                            <select id="template-type" required>
+                                <option value="">Select a template type...</option>
+                                <!-- Options will be loaded dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="template-section">Section (optional):</label>
+                            <select id="template-section">
+                                <option value="">Use entire template</option>
+                                <!-- Options will be loaded based on template type -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Variables (optional):</label>
+                            <div id="template-variables">
+                                <!-- Variable inputs will be added dynamically -->
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Generate Content</button>
+                            <button type="button" class="btn btn-secondary" onclick="closeModal('template-modal')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/tasks.js"></script>
+    <script src="/js/templates.js"></script>
+    <script src="/js/team.js"></script>
+    <script src="/js/export.js"></script>
+</body>
+</html>
