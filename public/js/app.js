@@ -492,17 +492,12 @@ function filterTasks() {
         const personFilter = document.getElementById('person-filter').value;
         const dayFilter = document.getElementById('day-filter').value;
         
-        console.log('Setting filters:', { person: personFilter, day: dayFilter });
-        
         taskManager.currentFilter = {
             person: personFilter,
             day: dayFilter
         };
         
-        console.log('TaskManager currentFilter set to:', taskManager.currentFilter);
         taskManager.renderTasks();
-    } else {
-        console.error('TaskManager not available');
     }
 }
 
@@ -569,4 +564,39 @@ function toggleTheme() {
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new NeuralWarsApp();
+    
+    // Set up event listeners for UI elements
+    setupEventListeners();
 });
+
+function setupEventListeners() {
+    // Filter event listeners
+    const personFilter = document.getElementById('person-filter');
+    const dayFilter = document.getElementById('day-filter');
+    
+    if (personFilter) {
+        personFilter.addEventListener('change', filterTasks);
+    }
+    
+    if (dayFilter) {
+        dayFilter.addEventListener('change', filterTasks);
+    }
+    
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    // Refresh metrics
+    const refreshBtn = document.getElementById('refresh-metrics');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', refreshMetrics);
+    }
+    
+    // Template generator
+    const templateGenBtn = document.getElementById('show-template-generator');
+    if (templateGenBtn) {
+        templateGenBtn.addEventListener('click', showTemplateGenerator);
+    }
+}
