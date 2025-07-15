@@ -31,41 +31,10 @@ router.get('/', async (req, res) => {
  */
 router.get('/categorized', async (req, res) => {
   try {
-    const templates = await parser.parseTemplates();
-    
-    if (!templates) {
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to load templates'
-      });
-    }
-
-    // Enhanced categorization
-    const categorized = {
-      social: { title: 'Social Media Templates', templates: [] },
-      email: { title: 'Email & Newsletter Templates', templates: [] },
-      press: { title: 'Press & Media Templates', templates: [] },
-      content: { title: 'Content Strategy Templates', templates: [] }
-    };
-
-    Object.keys(templates).forEach(key => {
-      const template = templates[key];
-      template.key = key;
-      
-      if (key.includes('J') || template.title.toLowerCase().includes('social')) {
-        categorized.social.templates.push(template);
-      } else if (key.includes('K') || template.title.toLowerCase().includes('newsletter') || template.title.toLowerCase().includes('email')) {
-        categorized.email.templates.push(template);
-      } else if (key.includes('L') || template.title.toLowerCase().includes('press') || template.title.toLowerCase().includes('release')) {
-        categorized.press.templates.push(template);
-      } else {
-        categorized.content.templates.push(template);
-      }
-    });
-    
+    const categorizedTemplates = await parser.parseTemplatesEnhanced();
     res.json({
       success: true,
-      data: categorized
+      data: categorizedTemplates
     });
   } catch (error) {
     console.error('Categorized templates error:', error);
@@ -227,6 +196,80 @@ router.post('/generate', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to generate template content'
+    });
+  }
+});
+
+/**
+ * GET /api/templates/categorized
+ * Get templates organized by category
+ */
+router.get('/categorized', async (req, res) => {
+  try {
+    const categorizedTemplates = await parser.parseTemplatesEnhanced();
+    res.json({
+      success: true,
+      data: categorizedTemplates
+    });
+  } catch (error) {
+    console.error('Categorized templates error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load categorized templates'
+    });
+  }
+});
+
+/**
+ * GET /api/templates/types
+ * Get available template types
+ */
+router.get('/meta/types', async (req, res) => {
+  try {
+    const templates = await parser.parseTemplates();
+    
+    if (!templates) {
+      return res.json({
+        success: true,
+        data: []
+      });
+    }
+
+    const types = Object.keys(templates).map(key => ({
+      type: key,
+      title: templates[key].title,
+      sectionsCount: templates[key].sections ? templates[key].sections.length : 0
+    }));
+
+    res.json({
+      success: true,
+      data: types
+    });
+  } catch (error) {
+    console.error('Template types error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load template types'
+    });
+  }
+});
+
+/**
+ * GET /api/templates/categorized
+ * Get templates organized by category
+ */
+router.get('/categorized', async (req, res) => {
+  try {
+    const categorizedTemplates = await parser.parseTemplatesEnhanced();
+    res.json({
+      success: true,
+      data: categorizedTemplates
+    });
+  } catch (error) {
+    console.error('Categorized templates error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load categorized templates'
     });
   }
 });

@@ -107,21 +107,16 @@ class NeuralWarsApp {
     }
 
     async loadTasksData() {
-        try {
-            const tasks = await this.apiCall('/tasks/daily');
-            this.updateTasksDisplay(tasks.data);
-        } catch (error) {
-            console.error('Failed to load tasks data:', error);
+        // Tasks are now handled by TaskManager
+        if (window.taskManager) {
+            await taskManager.loadTasks();
         }
     }
 
     async loadTemplatesData() {
-        try {
-            const templates = await this.apiCall('/templates');
-            this.updateTemplatesDisplay(templates.data);
-            this.loadTemplateTypes();
-        } catch (error) {
-            console.error('Failed to load templates data:', error);
+        // Templates are now handled by TemplateManager
+        if (window.templateManager) {
+            await templateManager.loadTemplates();
         }
     }
 
