@@ -10,6 +10,29 @@ class NeuralWarsApp {
         console.log('🚀 Neural Wars Marketing Automation Started');
         this.setupEventListeners();
         this.loadInitialData();
+        this.initializeTheme();
+    }
+
+    initializeTheme() {
+        // Check for saved theme preference or default to light
+        const savedTheme = localStorage.getItem('neural-wars-theme') || 'light';
+        this.setTheme(savedTheme);
+    }
+
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('neural-wars-theme', theme);
+        
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        
+        if (theme === 'dark') {
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Light';
+        } else {
+            themeIcon.className = 'fas fa-moon';
+            themeText.textContent = 'Dark';
+        }
     }
 
     setupEventListeners() {
@@ -529,6 +552,12 @@ async function exportData(type, format) {
 
 function integrateExternal(service) {
     app.showNotification(`${service} integration coming soon!`, 'info');
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    app.setTheme(newTheme);
 }
 
 // Initialize the application when DOM is loaded
