@@ -599,4 +599,32 @@ function setupEventListeners() {
     if (templateGenBtn) {
         templateGenBtn.addEventListener('click', showTemplateGenerator);
     }
+    
+    // Modal close buttons
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
+    
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', () => closeModal('template-modal'));
+    }
+    
+    if (modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', () => closeModal('template-modal'));
+    }
+    
+    // Export buttons
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('[data-export]')) {
+            const button = e.target.closest('[data-export]');
+            const type = button.dataset.export;
+            const format = button.dataset.format;
+            exportData(type, format);
+        }
+        
+        if (e.target.closest('[data-integration]')) {
+            const button = e.target.closest('[data-integration]');
+            const service = button.dataset.integration;
+            integrateExternal(service);
+        }
+    });
 }

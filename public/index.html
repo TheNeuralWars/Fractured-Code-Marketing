@@ -251,13 +251,13 @@
                             <h3><i class="fas fa-file-export"></i> Export Templates</h3>
                         </div>
                         <div class="export-options">
-                            <button class="btn btn-primary" onclick="exportData('templates', 'json')">
+                            <button class="btn btn-primary" data-export="templates" data-format="json">
                                 <i class="fas fa-code"></i> JSON
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('templates', 'csv')">
+                            <button class="btn btn-primary" data-export="templates" data-format="csv">
                                 <i class="fas fa-table"></i> CSV
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('templates', 'markdown')">
+                            <button class="btn btn-primary" data-export="templates" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
                             </button>
                         </div>
@@ -268,13 +268,13 @@
                             <h3><i class="fas fa-tasks"></i> Export Tasks</h3>
                         </div>
                         <div class="export-options">
-                            <button class="btn btn-primary" onclick="exportData('tasks', 'json')">
+                            <button class="btn btn-primary" data-export="tasks" data-format="json">
                                 <i class="fas fa-code"></i> JSON
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('tasks', 'csv')">
+                            <button class="btn btn-primary" data-export="tasks" data-format="csv">
                                 <i class="fas fa-table"></i> CSV
                             </button>
-                            <button class="btn btn-primary" onclick="exportData('tasks', 'markdown')">
+                            <button class="btn btn-primary" data-export="tasks" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
                             </button>
                         </div>
@@ -285,13 +285,13 @@
                             <h3><i class="fas fa-plug"></i> External Integrations</h3>
                         </div>
                         <div class="integration-options">
-                            <button class="btn btn-secondary" onclick="integrateExternal('google-workspace')">
+                            <button class="btn btn-secondary" data-integration="google-workspace">
                                 <i class="fab fa-google"></i> Google Workspace
                             </button>
-                            <button class="btn btn-secondary" onclick="integrateExternal('asana')">
+                            <button class="btn btn-secondary" data-integration="asana">
                                 <i class="fas fa-project-diagram"></i> Asana
                             </button>
-                            <button class="btn btn-secondary" onclick="integrateExternal('slack')">
+                            <button class="btn btn-secondary" data-integration="slack">
                                 <i class="fab fa-slack"></i> Slack
                             </button>
                         </div>
@@ -313,7 +313,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Generate Content from Template</h3>
-                    <button class="modal-close" onclick="closeModal('template-modal')">
+                    <button class="modal-close" id="modal-close-btn">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -341,7 +341,7 @@
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Generate Content</button>
-                            <button type="button" class="btn btn-secondary" onclick="closeModal('template-modal')">Cancel</button>
+                            <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
                         </div>
                     </form>
                 </div>
