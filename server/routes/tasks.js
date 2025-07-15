@@ -5,6 +5,10 @@ const MarkdownParser = require('../../src/parsers/MarkdownParser');
 const router = express.Router();
 const parser = new MarkdownParser(path.join(__dirname, '../../'));
 
+// Simple in-memory storage for task completion status
+// In a production app, this would be a database
+let taskCompletionStore = {};
+
 /**
  * GET /api/tasks/daily
  * Get daily tasks for all team members
@@ -12,6 +16,20 @@ const parser = new MarkdownParser(path.join(__dirname, '../../'));
 router.get('/daily', async (req, res) => {
   try {
     const tasksData = await parser.parseDailyTasks();
+    
+    // Apply completion status from store
+    if (tasksData) {
+      ['person1', 'person2', 'person3'].forEach(person => {
+        if (tasksData[person]) {
+          tasksData[person] = tasksData[person].map(task => ({
+            ...task,
+            completed: taskCompletionStore[task.id] || false,
+            completedAt: taskCompletionStore[`${task.id}_completedAt`] || null
+          }));
+        }
+      });
+    }
+    
     res.json({
       success: true,
       data: tasksData
@@ -105,8 +123,13 @@ router.post('/complete', async (req, res) => {
       });
     }
 
-    // In a real application, this would update a database
-    // For now, we'll just validate and return success
+    // Store completion status
+    taskCompletionStore[taskId] = completed || true;
+    if (completed) {
+      taskCompletionStore[`${taskId}_completedAt`] = new Date().toISOString();
+    } else {
+      delete taskCompletionStore[`${taskId}_completedAt`];
+    }
     
     res.json({
       success: true,
@@ -142,33 +165,34 @@ router.get('/progress', async (req, res) => {
       });
     }
 
-    // Calculate progress for each person
-    const progress = {
-      person1: {
-        total: tasksData.person1.length,
-        completed: tasksData.person1.filter(task => task.completed).length,
-        percentage: Math.round((tasksData.person1.filter(task => task.completed).length / tasksData.person1.length) * 100)
-      },
-      person2: {
-        total: tasksData.person2.length,
-        completed: tasksData.person2.filter(task => task.completed).length,
-        percentage: Math.round((tasksData.person2.filter(task => task.completed).length / tasksData.person2.length) * 100)
-      },
-      person3: {
-        total: tasksData.person3.length,
-        completed: tasksData.person3.filter(task => task.completed).length,
-        percentage: Math.round((tasksData.person3.filter(task => task.completed).length / tasksData.person3.length) * 100)
+    // Apply completion status from store and calculate progress
+    const progress = {};
+    ['person1', 'person2', 'person3'].forEach(person => {
+      if (tasksData[person]) {
+        const tasks = tasksData[person].map(task => ({
+          ...task,
+          completed: taskCompletionStore[task.id] || false
+        }));
+        
+        const completed = tasks.filter(task => task.completed).length;
+        const total = tasks.length;
+        
+        progress[person] = {
+          total,
+          completed,
+          percentage: total > 0 ? Math.round((completed / total) * 100) : 0
+        };
       }
-    };
+    });
 
     // Calculate overall progress
-    const totalTasks = progress.person1.total + progress.person2.total + progress.person3.total;
-    const totalCompleted = progress.person1.completed + progress.person2.completed + progress.person3.completed;
+    const totalTasks = Object.values(progress).reduce((sum, p) => sum + p.total, 0);
+    const totalCompleted = Object.values(progress).reduce((sum, p) => sum + p.completed, 0);
     
     progress.overall = {
       total: totalTasks,
       completed: totalCompleted,
-      percentage: Math.round((totalCompleted / totalTasks) * 100)
+      percentage: totalTasks > 0 ? Math.round((totalCompleted / totalTasks) * 100) : 0
     };
 
     res.json({

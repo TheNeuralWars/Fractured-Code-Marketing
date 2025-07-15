@@ -154,12 +154,17 @@ class MarkdownParser {
       const taskText = match[1];
       const timeMatch = taskText.match(/- (\d+) mins/);
       
+      // Extract detailed description that follows the task
+      const detailedDescription = this.extractTaskDescription(section, match.index);
+      
       tasks.push({
         id: this.generateTaskId(taskText),
         text: taskText,
+        description: detailedDescription,
         completed: false,
         estimatedTime: timeMatch ? parseInt(timeMatch[1]) : null,
-        day: this.extractDayFromContext(section, match.index)
+        day: this.extractDayFromContext(section, match.index),
+        context: this.extractTaskContext(taskText)
       });
     }
 
@@ -241,6 +246,107 @@ class MarkdownParser {
     const endIndex = nextHeadingIndex === -1 ? content.length : nextHeadingIndex;
     
     return content.substring(startIndex, endIndex).trim();
+  }
+
+  /**
+   * Extract detailed description for a task
+   */
+  extractTaskDescription(section, taskIndex) {
+    const lines = section.split('\n');
+    const taskLineIndex = section.substring(0, taskIndex).split('\n').length - 1;
+    
+    let description = '';
+    // Look for description lines that follow the task (indented with spaces)
+    for (let i = taskLineIndex + 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith('- ') && !line.startsWith('- [ ]')) {
+        // This is a description bullet point
+        description += line.substring(2) + '\n';
+      } else if (line.startsWith('  - ')) {
+        // This is an indented sub-point
+        description += line.substring(4) + '\n';
+      } else if (line === '' || line.startsWith('- [ ]') || line.startsWith('#')) {
+        // End of description
+        break;
+      }
+    }
+    
+    return description.trim();
+  }
+
+  /**
+   * Extract context information for tasks based on keywords
+   */
+  extractTaskContext(taskText) {
+    const context = {
+      category: 'general',
+      relatedDocs: [],
+      priority: 'normal'
+    };
+
+    const taskLower = taskText.toLowerCase();
+    
+    // Categorize based on keywords
+    if (taskLower.includes('analytics') || taskLower.includes('metrics') || taskLower.includes('performance')) {
+      context.category = 'analytics';
+      context.relatedDocs.push('PERFORMANCE-DASHBOARD.md', 'I-performance-tracking-templates.md');
+    } else if (taskLower.includes('social') || taskLower.includes('instagram') || taskLower.includes('twitter') || taskLower.includes('tiktok')) {
+      context.category = 'social';
+      context.relatedDocs.push('J-templates-examples.md', 'M-content-strategy.md');
+    } else if (taskLower.includes('email') || taskLower.includes('newsletter')) {
+      context.category = 'email';
+      context.relatedDocs.push('K-newsletter-templates.md');
+    } else if (taskLower.includes('website') || taskLower.includes('content')) {
+      context.category = 'content';
+      context.relatedDocs.push('N-homepage-content.md', 'M-content-strategy.md');
+    } else if (taskLower.includes('team') || taskLower.includes('coordination') || taskLower.includes('meeting')) {
+      context.category = 'coordination';
+      context.relatedDocs.push('TEAM-COORDINATION.md', 'O-team-roles-guide.md');
+    } else if (taskLower.includes('advertising') || taskLower.includes('amazon') || taskLower.includes('budget')) {
+      context.category = 'advertising';
+      context.relatedDocs.push('CAMPAIGN-EXECUTION-GUIDE.md');
+    }
+
+    // Determine priority based on time and keywords
+    if (taskLower.includes('urgent') || taskLower.includes('critical') || taskLower.includes('launch')) {
+      context.priority = 'high';
+    } else if (taskText.includes('120 mins') || taskText.includes('150 mins')) {
+      context.priority = 'high';
+    }
+
+    return context;
+  }
+
+  /**
+   * Get enhanced template information with categories
+   */
+  async parseTemplatesEnhanced() {
+    const templates = await this.parseTemplates();
+    
+    // Enhanced categorization
+    const categorized = {
+      social: { title: 'Social Media Templates', templates: [] },
+      email: { title: 'Email & Newsletter Templates', templates: [] },
+      press: { title: 'Press & Media Templates', templates: [] },
+      content: { title: 'Content Strategy Templates', templates: [] }
+    };
+
+    Object.keys(templates).forEach(key => {
+      const template = templates[key];
+      template.key = key;
+      
+      if (key.includes('J') || template.title.toLowerCase().includes('social')) {
+        categorized.social.templates.push(template);
+      } else if (key.includes('K') || template.title.toLowerCase().includes('newsletter') || template.title.toLowerCase().includes('email')) {
+        categorized.email.templates.push(template);
+      } else if (key.includes('L') || template.title.toLowerCase().includes('press') || template.title.toLowerCase().includes('release')) {
+        categorized.press.templates.push(template);
+      } else {
+        categorized.content.templates.push(template);
+      }
+    });
+
+    return categorized;
   }
 }
 
