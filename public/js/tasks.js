@@ -24,7 +24,11 @@ class TaskManager {
 
     async loadTasks() {
         try {
-            app.showLoading();
+            // Show loading indicator if available
+            if (typeof app !== 'undefined' && app.showLoading) {
+                app.showLoading();
+            }
+            
             const response = await fetch('/api/tasks/daily');
             const result = await response.json();
             
@@ -32,14 +36,18 @@ class TaskManager {
                 this.tasks = result.data;
                 this.renderTasks();
                 this.updateTaskProgress();
+                console.log('✅ Tasks loaded successfully:', Object.keys(this.tasks).length, 'team members');
             } else {
                 throw new Error(result.error);
             }
         } catch (error) {
             console.error('Failed to load tasks:', error);
-            app.showNotification('Failed to load tasks', 'error');
+            this.showNotification('Failed to load tasks', 'error');
         } finally {
-            app.hideLoading();
+            // Hide loading indicator if available
+            if (typeof app !== 'undefined' && app.hideLoading) {
+                app.hideLoading();
+            }
         }
     }
 
@@ -73,7 +81,12 @@ class TaskManager {
     }
 
     generateTaskHTML(task, person) {
-        const completedClass = task.completed ? 'completed' : '';
+        // Get persistent task state from data manager
+        const persistentState = dataManager.getTaskState(task.id, person);
+        const isCompleted = persistentState.completed || task.completed;
+        const completedAt = persistentState.completedAt || task.completedAt;
+        
+        const completedClass = isCompleted ? 'completed' : '';
         const contextBadge = this.getContextBadge(task.context);
         const estimatedTime = task.estimatedTime ? `${task.estimatedTime} mins` : 'No estimate';
         
@@ -85,7 +98,7 @@ class TaskManager {
                                class="task-checkbox" 
                                data-task-id="${task.id}" 
                                data-person="${person}"
-                               ${task.completed ? 'checked' : ''}>
+                               ${isCompleted ? 'checked' : ''}>
                     </div>
                     <div class="task-content">
                         <div class="task-title">${this.stripMarkdown(task.text)}</div>
@@ -97,9 +110,9 @@ class TaskManager {
                                 <i class="fas fa-calendar"></i> ${this.capitalizeFirst(task.day)}
                             </span>
                             ${contextBadge}
-                            ${task.completed && task.completedAt ? 
+                            ${isCompleted && completedAt ? 
                                 `<span class="task-completed-at">
-                                    <i class="fas fa-check"></i> ${new Date(task.completedAt).toLocaleString()}
+                                    <i class="fas fa-check"></i> ${new Date(completedAt).toLocaleString()}
                                 </span>` : ''
                             }
                         </div>
@@ -182,54 +195,51 @@ class TaskManager {
         const completed = checkbox.checked;
 
         try {
-            const response = await fetch('/api/tasks/complete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    taskId,
-                    personId: person,
-                    completed
-                })
-            });
-
-            const result = await response.json();
+            // Update data manager first (local persistence)
+            const taskData = dataManager.toggleTask(taskId, person, completed);
             
-            if (result.success) {
-                // Update local task state
-                const task = this.findTask(taskId);
-                if (task) {
-                    task.completed = completed;
-                    task.completedAt = completed ? new Date().toISOString() : null;
-                }
-
-                // Update UI
-                const taskItem = checkbox.closest('.task-item');
-                if (completed) {
-                    taskItem.classList.add('completed');
-                    app.showNotification('Task completed!', 'success');
-                } else {
-                    taskItem.classList.remove('completed');
-                }
-
-                // Update progress and dashboard
-                this.updateTaskProgress();
-                
-                // ENHANCED: Update Recent Activity instantly with detailed tracking
-                this.addToRecentActivity(task, person, completed);
-                
-                if (window.dashboardManager) {
-                    dashboardManager.refreshMetrics();
-                }
-            } else {
-                // Revert checkbox if API call failed
-                checkbox.checked = !completed;
-                throw new Error(result.error);
+            // Update local task state
+            const task = this.findTask(taskId);
+            if (task) {
+                task.completed = completed;
+                task.completedAt = taskData.completedAt;
             }
+
+            // Update UI
+            const taskItem = checkbox.closest('.task-item');
+            if (completed) {
+                taskItem.classList.add('completed');
+                
+                // Add completion timestamp if it doesn't exist
+                if (taskData.completedAt && !taskItem.querySelector('.task-completed-at')) {
+                    const timeElement = document.createElement('span');
+                    timeElement.className = 'task-completed-at';
+                    timeElement.innerHTML = `<i class="fas fa-check"></i> ${new Date(taskData.completedAt).toLocaleString()}`;
+                    taskItem.querySelector('.task-meta').appendChild(timeElement);
+                }
+                
+                this.showNotification('Task completed!', 'success');
+            } else {
+                taskItem.classList.remove('completed');
+                
+                // Remove completion timestamp
+                const timeElement = taskItem.querySelector('.task-completed-at');
+                if (timeElement) {
+                    timeElement.remove();
+                }
+                
+                this.showNotification('Task marked incomplete', 'info');
+            }
+
+            // Update progress and dashboard
+            this.updateTaskProgress();
+            
+            // ENHANCED: Update Recent Activity instantly with detailed tracking
+            this.addToRecentActivity(task, person, completed);
+            
         } catch (error) {
             console.error('Failed to update task:', error);
-            app.showNotification('Failed to update task', 'error');
+            this.showNotification('Failed to update task', 'error');
             checkbox.checked = !completed; // Revert on error
         }
     }
@@ -259,7 +269,7 @@ class TaskManager {
             </div>
             <div class="activity-content">
                 <div class="activity-text">
-                    ${completed ? 'Task completed' : 'Task unchecked'}: ${task ? task.description : 'Unknown task'} 
+                    ${completed ? 'Task completed' : 'Task unchecked'}: ${task ? this.stripMarkdown(task.text) : 'Unknown task'} 
                     by ${personNames[personId] || personId}
                 </div>
                 <div class="activity-time">Just now (${timeString})</div>
@@ -290,6 +300,36 @@ class TaskManager {
                 const minutes = parseInt(text.match(/(\d+)/)?.[1] || 1) + 1;
                 timeElement.textContent = text.replace(/\d+ minute/, `${minutes} minutes`);
             }
+        });
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-message">${message}</span>
+                <button class="notification-close">&times;</button>
+            </div>
+        `;
+
+        // Add to page
+        document.body.appendChild(notification);
+
+        // Show notification
+        setTimeout(() => notification.classList.add('show'), 100);
+
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+
+        // Close button
+        notification.querySelector('.notification-close').addEventListener('click', () => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
         });
     }
     }
@@ -325,15 +365,59 @@ class TaskManager {
 
     async updateTaskProgress() {
         try {
-            const response = await fetch('/api/tasks/progress');
-            const result = await response.json();
+            // Get progress from data manager
+            const stats = dataManager.getTaskStats();
             
-            if (result.success) {
-                this.updateProgressDisplay(result.data);
+            // Update overall progress in weekly progress card
+            const progressText = document.querySelector('.progress-text');
+            const progressFill = document.querySelector('.progress-fill');
+            
+            if (progressText && progressFill) {
+                progressText.textContent = `${stats.completed} of ${stats.total} tasks completed (${stats.percentage}%)`;
+                progressFill.style.width = `${stats.percentage}%`;
             }
+            
+            // Update individual progress indicators for each person
+            this.updatePersonProgress();
+            
         } catch (error) {
             console.error('Failed to update progress:', error);
         }
+    }
+
+    updatePersonProgress() {
+        const people = ['person1', 'person2', 'person3'];
+        
+        people.forEach(person => {
+            const tasksForPerson = this.tasks[person] || [];
+            let completed = 0;
+            let total = tasksForPerson.length;
+            
+            // Count completed tasks from data manager
+            tasksForPerson.forEach(task => {
+                const state = dataManager.getTaskState(task.id, person);
+                if (state.completed) {
+                    completed++;
+                }
+            });
+            
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            // Update progress indicator
+            const container = document.querySelector(`#${person}-tasks .person-tasks h3`);
+            if (container) {
+                const existing = container.querySelector('.progress-indicator');
+                if (existing) existing.remove();
+
+                const indicator = document.createElement('span');
+                indicator.className = 'progress-indicator';
+                indicator.innerHTML = ` (${completed}/${total} - ${percentage}%)`;
+                indicator.style.fontSize = '12px';
+                indicator.style.fontWeight = 'normal';
+                indicator.style.color = '#6b7280';
+                container.appendChild(indicator);
+            }
+        });
     }
 
     updateProgressDisplay(progressData) {
@@ -404,12 +488,25 @@ function filterTasks() {
 
 function openDocumentation(docName) {
     // This could open documentation in a modal or new tab
-    app.showNotification(`Opening ${docName}`, 'info');
+    this.showNotification(`Opening ${docName}`, 'info');
 }
 
-// Initialize task manager when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    if (typeof app !== 'undefined') {
-        window.taskManager = new TaskManager();
+// Expose TaskManager class globally and initialize
+if (typeof window !== 'undefined') {
+    window.TaskManager = TaskManager;
+    
+    // Initialize task manager immediately if DOM is ready, otherwise wait for DOMContentLoaded
+    function initTaskManager() {
+        if (!window.taskManager) {
+            window.taskManager = new TaskManager();
+            console.log('✅ Task Manager initialized');
+        }
     }
-});
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTaskManager);
+    } else {
+        // DOM is already ready
+        initTaskManager();
+    }
+}

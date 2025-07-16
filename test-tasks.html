@@ -1,0 +1,41 @@
+// Simple task manager test page for debugging
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager Test</title>
+</head>
+<body>
+    <h1>Task Manager Debug Test</h1>
+    <div id="test-results"></div>
+    
+    <script src="/js/dataManager.js"></script>
+    <script src="/js/tasks.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const results = document.getElementById('test-results');
+            
+            results.innerHTML += '<p>DOM Content Loaded</p>';
+            
+            // Test if classes are available
+            results.innerHTML += `<p>DataManager available: ${typeof DataManager !== 'undefined'}</p>`;
+            results.innerHTML += `<p>TaskManager available: ${typeof TaskManager !== 'undefined'}</p>`;
+            
+            // Test if global instances exist
+            results.innerHTML += `<p>window.dataManager: ${typeof window.dataManager !== 'undefined'}</p>`;
+            results.innerHTML += `<p>window.taskManager: ${typeof window.taskManager !== 'undefined'}</p>`;
+            
+            // Try to create task manager manually
+            try {
+                if (typeof TaskManager !== 'undefined') {
+                    const testTaskManager = new TaskManager();
+                    results.innerHTML += '<p>Task Manager created successfully</p>';
+                } else {
+                    results.innerHTML += '<p>TaskManager class not found</p>';
+                }
+            } catch (error) {
+                results.innerHTML += `<p>Error creating TaskManager: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
