@@ -2,7 +2,27 @@
 
 A comprehensive web application that automates execution of the marketing plan for "The Neural Wars: Fractured Code" by leveraging all existing templates, dashboards, and workflow guides.
 
+**🌐 Deploy to Vercel**: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTheNeuralWars%2FFractured-Code-Marketing)
+
 ![Neural Wars Marketing Dashboard](https://github.com/user-attachments/assets/7dde3e0e-6875-479c-ade9-912efa45135e)
+
+## 🚀 Quick Start
+
+### Vercel Deployment (Recommended)
+1. Click the "Deploy with Vercel" button above
+2. Connect your GitHub account
+3. Deploy with default settings
+4. Your app will be live at `https://your-app-name.vercel.app`
+
+### Local Development
+```bash
+git clone https://github.com/TheNeuralWars/Fractured-Code-Marketing.git
+cd Fractured-Code-Marketing
+npm install
+npm start
+```
+
+Visit `http://localhost:3000` to access the application.
 
 ## 🚀 Core Features
 
@@ -49,12 +69,21 @@ A comprehensive web application that automates execution of the marketing plan f
 - **RESTful API** - Clean endpoints for dashboard, tasks, templates, team, and export
 - **File-based data** - Leverages existing markdown files as data source
 - **Security middleware** - Helmet, CORS, and input validation
+- **Vercel serverless** - Optimized for serverless function deployment
 
 ### Frontend (Vanilla JavaScript)
 - **Responsive design** - Mobile-friendly interface with CSS Grid
 - **Progressive enhancement** - Works without JavaScript for basic functionality
 - **Tab-based navigation** - Clean, intuitive interface design
 - **Real-time updates** - Dynamic content loading and state management
+- **CDN delivery** - Static assets served via Vercel Edge Network
+
+### Deployment & Hosting
+- **Vercel Platform** - Serverless functions with automatic scaling
+- **Edge Network** - Global CDN for fast content delivery
+- **Automatic HTTPS** - SSL certificates automatically provisioned
+- **Git Integration** - Automatic deployments on push to main branch
+- **Preview Deployments** - Every pull request gets a preview URL
 
 ### Data Processing
 - **Intelligent parsing** - Extracts tasks, templates, and coordination data from markdown

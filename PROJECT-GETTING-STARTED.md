@@ -4,6 +4,22 @@
 
 This repository now contains a complete, actionable project management system for executing the Neural Wars marketing campaign. Here's how to get started immediately:
 
+### Step 0: Deploy the Marketing App (5 minutes) - NEW!
+
+#### Quick Deploy to Vercel
+1. **One-Click Deploy**: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTheNeuralWars%2FFractured-Code-Marketing)
+2. **Access your live app** at: `https://your-app-name.vercel.app`
+3. **Share with team** for collaborative campaign management
+
+#### Benefits of the Web App
+- **📊 Real-time Dashboard** - Live campaign metrics and progress tracking
+- **✅ Task Management** - Interactive daily tasks with progress tracking
+- **📝 Template Access** - Browse and use all marketing templates
+- **👥 Team Coordination** - Centralized team communication and status
+- **📤 Export Tools** - Generate reports and export data
+
+**Alternative**: See [DEPLOYMENT.md](./DEPLOYMENT.md) for manual setup or [VERCEL-INTEGRATION.md](./VERCEL-INTEGRATION.md) for detailed configuration.
+
 ### Step 1: Understanding Your Resources (15 minutes)
 
 #### Original Strategy Documents (Already Complete)

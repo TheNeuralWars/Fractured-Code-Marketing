@@ -6,8 +6,6 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "build": "echo 'No build step required - static files ready'",
-    "vercel-build": "echo 'Vercel build complete'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["marketing", "automation", "neural-wars", "book-launch"],
