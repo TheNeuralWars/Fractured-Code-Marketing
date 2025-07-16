@@ -24,7 +24,11 @@ class TaskManager {
 
     async loadTasks() {
         try {
-            app.showLoading();
+            // Show loading indicator if available
+            if (typeof app !== 'undefined' && app.showLoading) {
+                app.showLoading();
+            }
+            
             const response = await fetch('/api/tasks/daily');
             const result = await response.json();
             
@@ -32,14 +36,18 @@ class TaskManager {
                 this.tasks = result.data;
                 this.renderTasks();
                 this.updateTaskProgress();
+                console.log('✅ Tasks loaded successfully:', Object.keys(this.tasks).length, 'team members');
             } else {
                 throw new Error(result.error);
             }
         } catch (error) {
             console.error('Failed to load tasks:', error);
-            app.showNotification('Failed to load tasks', 'error');
+            this.showNotification('Failed to load tasks', 'error');
         } finally {
-            app.hideLoading();
+            // Hide loading indicator if available
+            if (typeof app !== 'undefined' && app.hideLoading) {
+                app.hideLoading();
+            }
         }
     }
 
@@ -487,10 +495,18 @@ function openDocumentation(docName) {
 if (typeof window !== 'undefined') {
     window.TaskManager = TaskManager;
     
-    // Initialize task manager when page loads
-    document.addEventListener('DOMContentLoaded', () => {
+    // Initialize task manager immediately if DOM is ready, otherwise wait for DOMContentLoaded
+    function initTaskManager() {
         if (!window.taskManager) {
             window.taskManager = new TaskManager();
+            console.log('✅ Task Manager initialized');
         }
-    });
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTaskManager);
+    } else {
+        // DOM is already ready
+        initTaskManager();
+    }
 }
