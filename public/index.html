@@ -345,6 +345,26 @@
                 </div>
 
                 <div class="export-grid">
+                    <div class="card export-documents">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-pdf"></i> Professional Documents</h3>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-success" data-export="campaign-report" data-format="pdf" title="Complete campaign overview">
+                                <i class="fas fa-chart-line"></i> Campaign Report PDF
+                            </button>
+                            <button class="btn btn-success" data-export="team-guide" data-format="pdf" title="Team roles and responsibilities">
+                                <i class="fas fa-users"></i> Team Guide PDF
+                            </button>
+                            <button class="btn btn-success" data-export="timeline" data-format="pdf" title="Launch timeline and milestones">
+                                <i class="fas fa-calendar-alt"></i> Timeline PDF
+                            </button>
+                            <button class="btn btn-success" data-export="all-docs" data-format="pdf" title="Complete documentation package">
+                                <i class="fas fa-file-archive"></i> Complete Package PDF
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="card export-templates">
                         <div class="card-header">
                             <h3><i class="fas fa-file-export"></i> Export Templates</h3>
@@ -358,6 +378,9 @@
                             </button>
                             <button class="btn btn-primary" data-export="templates" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                            <button class="btn btn-success" data-export="templates" data-format="pdf" title="Professional PDF with branding">
+                                <i class="fas fa-file-pdf"></i> Professional PDF
                             </button>
                         </div>
                     </div>
@@ -375,6 +398,9 @@
                             </button>
                             <button class="btn btn-primary" data-export="tasks" data-format="markdown">
                                 <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                            <button class="btn btn-success" data-export="tasks" data-format="pdf" title="Professional PDF with branding">
+                                <i class="fas fa-file-pdf"></i> Professional PDF
                             </button>
                         </div>
                     </div>
@@ -492,8 +518,8 @@
                         <button class="btn btn-small" id="export-file-content">
                             <i class="fas fa-download"></i> Export
                         </button>
-                        <button class="modal-close" id="file-modal-close">
-                            <i class="fas fa-times"></i>
+                        <button class="modal-close btn btn-secondary" id="file-modal-close" title="Back to Dashboard (ESC)">
+                            <i class="fas fa-times"></i> Back to Dashboard
                         </button>
                     </div>
                 </div>
@@ -512,8 +538,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Search Marketing Files</h3>
-                    <button class="modal-close" id="search-modal-close">
-                        <i class="fas fa-times"></i>
+                    <button class="modal-close btn btn-secondary" id="search-modal-close" title="Back to Dashboard (ESC)">
+                        <i class="fas fa-times"></i> Back to Dashboard
                     </button>
                 </div>
                 <div class="modal-body">
@@ -543,8 +569,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Generate Content from Template</h3>
-                    <button class="modal-close" id="modal-close-btn">
-                        <i class="fas fa-times"></i>
+                    <button class="modal-close btn btn-secondary" id="modal-close-btn" title="Back to Dashboard (ESC)">
+                        <i class="fas fa-times"></i> Back to Dashboard
                     </button>
                 </div>
                 <div class="modal-body">

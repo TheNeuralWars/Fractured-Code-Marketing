@@ -83,6 +83,94 @@ class NeuralWarsApp {
                 this.generateTemplateContent();
             });
         }
+
+        // Enhanced modal controls - ESC key support and global close handling
+        this.setupModalControls();
+        
+        // Enhanced navigation with submenu controls
+        this.setupNavigationControls();
+        
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                this.setTheme(newTheme);
+            });
+        }
+    }
+
+    setupNavigationControls() {
+        // Enhanced submenu functionality - start collapsed
+        document.querySelectorAll('.nav-group').forEach(group => {
+            const link = group.querySelector('.nav-link');
+            const submenu = group.querySelector('.nav-submenu');
+            
+            if (submenu) {
+                // Click to toggle submenu
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleSubmenu(group);
+                });
+                
+                // Keep submenu open when clicking inside it
+                submenu.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        // Close submenus when clicking outside
+        document.addEventListener('click', () => {
+            this.closeAllSubmenus();
+        });
+    }
+
+    toggleSubmenu(navGroup) {
+        const isOpen = navGroup.classList.contains('submenu-open');
+        
+        // Close all other submenus first
+        this.closeAllSubmenus();
+        
+        // Toggle this submenu
+        if (!isOpen) {
+            navGroup.classList.add('submenu-open');
+        }
+    }
+
+    closeAllSubmenus() {
+        document.querySelectorAll('.nav-group').forEach(group => {
+            group.classList.remove('submenu-open');
+        });
+    }
+
+    setupModalControls() {
+        // ESC key support for all modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeAllModals();
+            }
+        });
+
+        // Setup close buttons for all modals
+        document.querySelectorAll('.modal-close').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const modal = button.closest('.modal');
+                if (modal) {
+                    this.closeModal(modal.id);
+                }
+            });
+        });
+
+        // Modal backdrop clicks
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeModal(modal.id);
+                }
+            });
+        });
     }
 
     switchTab(tabName) {
@@ -248,38 +336,99 @@ class NeuralWarsApp {
         const teamStatusList = document.getElementById('team-status-list');
         if (!teamStatusList || !status) return;
 
+        // Enhanced team status with expandable details
         const teamMembers = [
             {
                 id: 'person1',
                 name: 'Content Creator',
                 initials: 'CC',
+                role: 'Content Creator & Visual Designer',
                 task: 'Creating social media graphics',
-                status: 'on-track'
+                status: 'on-track',
+                details: [
+                    'Designing Neural Wars-themed social media assets',
+                    'Creating book cover variations for testing',
+                    'Developing visual style guide for campaign',
+                    'Planning video trailer storyboard concepts'
+                ],
+                completed: '15/20 visual assets',
+                nextDeadline: 'Tomorrow: Social media asset delivery'
             },
             {
                 id: 'person2', 
                 name: 'Community Manager',
                 initials: 'CM',
+                role: 'Social Engagement & Community Manager',
                 task: 'Influencer outreach',
-                status: 'on-track'
+                status: 'on-track',
+                details: [
+                    'Researching sci-fi book influencers and reviewers',
+                    'Drafting personalized outreach emails',
+                    'Setting up social media posting schedules',
+                    'Monitoring engagement and community feedback'
+                ],
+                completed: '8/15 influencer contacts made',
+                nextDeadline: 'Friday: Influencer campaign launch'
             },
             {
                 id: 'person3',
                 name: 'Analytics Coordinator', 
                 initials: 'AC',
+                role: 'Analytics, Advertising & Strategic Coordination',
                 task: 'Performance analysis',
-                status: 'on-track'
+                status: 'on-track',
+                details: [
+                    'Setting up Amazon KDP analytics tracking',
+                    'Configuring Google Analytics for author website',
+                    'Planning A/B testing for ad campaigns',
+                    'Preparing performance dashboards and reports'
+                ],
+                completed: '5/8 analytics tools configured',
+                nextDeadline: 'Monday: First performance report'
             }
         ];
 
         teamStatusList.innerHTML = teamMembers.map(member => `
-            <div class="team-member">
-                <div class="member-avatar">${member.initials}</div>
-                <div class="member-info">
-                    <div class="member-name">${member.name}</div>
-                    <div class="member-task">${member.task}</div>
+            <div class="team-member" data-member="${member.id}">
+                <div class="member-summary" onclick="toggleMemberDetails('${member.id}')">
+                    <div class="member-avatar">${member.initials}</div>
+                    <div class="member-info">
+                        <div class="member-name">${member.name}</div>
+                        <div class="member-task">${member.task}</div>
+                    </div>
+                    <span class="member-status status-${member.status}">${member.status.replace('-', ' ')}</span>
+                    <div class="expand-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
                 </div>
-                <span class="member-status status-${member.status}">${member.status.replace('-', ' ')}</span>
+                <div class="member-details hidden">
+                    <div class="member-role">
+                        <strong>Role:</strong> ${member.role}
+                    </div>
+                    <div class="member-progress">
+                        <strong>Progress:</strong> ${member.completed}
+                    </div>
+                    <div class="member-deadline">
+                        <strong>Next Deadline:</strong> ${member.nextDeadline}
+                    </div>
+                    <div class="member-activities">
+                        <strong>Current Activities:</strong>
+                        <ul>
+                            ${member.details.map(detail => `<li>${detail}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn btn-small" onclick="assignRole('${member.id}')">
+                            <i class="fas fa-user-edit"></i> Assign Role
+                        </button>
+                        <button class="btn btn-small" onclick="updateResponsibilities('${member.id}')">
+                            <i class="fas fa-tasks"></i> Update Tasks
+                        </button>
+                        <button class="btn btn-small" onclick="logCommunication('${member.id}')">
+                            <i class="fas fa-comment"></i> Log Communication
+                        </button>
+                    </div>
+                </div>
             </div>
         `).join('');
     }
@@ -768,11 +917,37 @@ class NeuralWarsApp {
     }
 
     showModal(modalId) {
-        document.getElementById(modalId).classList.remove('hidden');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            
+            // Focus the modal for accessibility
+            const firstFocusable = modal.querySelector('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+            
+            // Track current modal for ESC handling
+            this.currentModal = modalId;
+        }
     }
 
     closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            this.currentModal = null;
+        }
+    }
+
+    closeAllModals() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            if (!modal.classList.contains('hidden')) {
+                this.closeModal(modal.id);
+            }
+        });
     }
 }
 
@@ -817,9 +992,47 @@ function updateStatus() {
     app.showNotification('Status update feature coming soon!', 'info');
 }
 
+// Enhanced team member functions
+function toggleMemberDetails(memberId) {
+    const member = document.querySelector(`[data-member="${memberId}"]`);
+    if (member) {
+        const details = member.querySelector('.member-details');
+        const arrow = member.querySelector('.expand-arrow i');
+        
+        if (details.classList.contains('hidden')) {
+            details.classList.remove('hidden');
+            arrow.classList.remove('fa-chevron-down');
+            arrow.classList.add('fa-chevron-up');
+        } else {
+            details.classList.add('hidden');
+            arrow.classList.remove('fa-chevron-up');
+            arrow.classList.add('fa-chevron-down');
+        }
+    }
+}
+
+function assignRole(memberId) {
+    app.showNotification(`Role assignment for ${memberId} - feature coming soon!`, 'info');
+}
+
+function updateResponsibilities(memberId) {
+    app.showNotification(`Responsibility update for ${memberId} - feature coming soon!`, 'info');
+}
+
+function logCommunication(memberId) {
+    app.showNotification(`Communication logging for ${memberId} - feature coming soon!`, 'info');
+}
+
 async function exportData(type, format) {
     try {
         app.showLoading();
+        
+        // Enhanced PDF export functionality
+        if (format === 'pdf') {
+            await exportToPDF(type);
+            return;
+        }
+        
         const response = await fetch(`/api/export/${type}/${format}`);
         
         if (!response.ok) {
@@ -843,6 +1056,112 @@ async function exportData(type, format) {
         app.showNotification('Export failed', 'error');
     } finally {
         app.hideLoading();
+    }
+}
+
+// Enhanced PDF export with professional branding
+async function exportToPDF(type) {
+    try {
+        // This would typically use a library like jsPDF or Puppeteer on the server
+        const response = await fetch('/api/export/pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: type,
+                branding: {
+                    title: 'The Neural Wars: Fractured Code',
+                    subtitle: 'Marketing Campaign Documentation',
+                    author: 'Neural Wars Marketing Team',
+                    date: new Date().toLocaleDateString()
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('PDF generation failed');
+        }
+
+        // Download the PDF
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `neural-wars-${type}-${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        app.showNotification(`Professional PDF exported successfully`, 'success');
+    } catch (error) {
+        console.error('PDF export failed:', error);
+        
+        // Fallback to browser print with enhanced formatting
+        const printWindow = window.open('', '_blank');
+        const content = document.querySelector('.file-viewer-content') || document.querySelector('.main-content');
+        
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>The Neural Wars: Fractured Code - Marketing Documentation</title>
+                <style>
+                    @page { margin: 1in; }
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        line-height: 1.6; 
+                        color: #333;
+                    }
+                    .header {
+                        text-align: center;
+                        border-bottom: 2px solid #667eea;
+                        padding-bottom: 20px;
+                        margin-bottom: 30px;
+                    }
+                    .title { 
+                        font-size: 24px; 
+                        font-weight: bold; 
+                        color: #667eea;
+                        margin: 0;
+                    }
+                    .subtitle { 
+                        font-size: 18px; 
+                        color: #666; 
+                        margin: 10px 0;
+                    }
+                    .meta {
+                        font-size: 14px;
+                        color: #888;
+                    }
+                    .content {
+                        max-width: none;
+                    }
+                    h1, h2, h3 { color: #667eea; }
+                    table { border-collapse: collapse; width: 100%; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1 class="title">The Neural Wars: Fractured Code</h1>
+                    <p class="subtitle">Marketing Campaign Documentation</p>
+                    <p class="meta">Generated on ${new Date().toLocaleDateString()} | Type: ${type}</p>
+                </div>
+                <div class="content">
+                    ${content ? content.innerHTML : 'Content not available'}
+                </div>
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        printWindow.print();
+        printWindow.close();
+        
+        app.showNotification('Content formatted for printing', 'info');
     }
 }
 

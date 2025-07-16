@@ -13,14 +13,40 @@
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     min-width: 250px;
     z-index: 1000;
     padding: 8px 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
 }
 
-.nav-group:hover .nav-submenu {
+.nav-group:hover .nav-submenu,
+.nav-group.submenu-open .nav-submenu {
     display: block;
+    opacity: 0.95; /* Increased opacity to 95% for better visibility */
+    transform: translateY(0);
+}
+
+.nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-group .nav-link::after {
+    content: '\f107'; /* Font Awesome down arrow */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 12px;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-group.submenu-open .nav-link::after {
+    transform: rotate(180deg);
 }
 
 .nav-sublink {
@@ -31,6 +57,7 @@
     text-decoration: none;
     transition: all 0.2s ease;
     border-bottom: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .nav-sublink:last-child {
@@ -49,7 +76,184 @@
     font-size: 14px;
 }
 
-/* Enhanced File Viewer Modal */
+/* Enhanced Team Status Styles */
+.team-member {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.team-member:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.member-summary {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.member-summary:hover {
+    background: var(--hover-bg);
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 12px;
+}
+
+.member-info {
+    flex: 1;
+}
+
+.member-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.member-task {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.member-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 12px;
+}
+
+.status-on-track {
+    background: #d4edda;
+    color: #155724;
+}
+
+.expand-arrow {
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.expand-arrow i {
+    font-size: 14px;
+}
+
+.member-details {
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.member-details.hidden {
+    display: none;
+}
+
+.member-role,
+.member-progress,
+.member-deadline {
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.member-activities {
+    margin-bottom: 16px;
+}
+
+.member-activities ul {
+    margin: 8px 0 0 20px;
+    font-size: 14px;
+}
+
+.member-activities li {
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+}
+
+.member-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.member-actions .btn {
+    font-size: 12px;
+    padding: 6px 12px;
+}
+
+/* Enhanced Recent Activity Styles */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+    animation: slideInFromTop 0.3s ease-out;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.activity-icon.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.activity-icon.uncompleted {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 .modal-content.large {
     max-width: 90vw;
     max-height: 90vh;

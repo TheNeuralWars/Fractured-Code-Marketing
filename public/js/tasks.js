@@ -215,6 +215,10 @@ class TaskManager {
 
                 // Update progress and dashboard
                 this.updateTaskProgress();
+                
+                // ENHANCED: Update Recent Activity instantly with detailed tracking
+                this.addToRecentActivity(task, person, completed);
+                
                 if (window.dashboardManager) {
                     dashboardManager.refreshMetrics();
                 }
@@ -228,6 +232,66 @@ class TaskManager {
             app.showNotification('Failed to update task', 'error');
             checkbox.checked = !completed; // Revert on error
         }
+    }
+
+    // ENHANCED: Add real-time activity tracking
+    addToRecentActivity(task, personId, completed) {
+        const activityList = document.getElementById('recent-activity-list');
+        if (!activityList) return;
+
+        const personNames = {
+            'person1': 'Content Creator',
+            'person2': 'Community Manager', 
+            'person3': 'Analytics Coordinator'
+        };
+
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+            <div class="activity-icon ${completed ? 'completed' : 'uncompleted'}">
+                <i class="fas ${completed ? 'fa-check-circle' : 'fa-undo'}"></i>
+            </div>
+            <div class="activity-content">
+                <div class="activity-text">
+                    ${completed ? 'Task completed' : 'Task unchecked'}: ${task ? task.description : 'Unknown task'} 
+                    by ${personNames[personId] || personId}
+                </div>
+                <div class="activity-time">Just now (${timeString})</div>
+            </div>
+        `;
+
+        // Add to top of activity list
+        activityList.insertBefore(activityItem, activityList.firstChild);
+
+        // Keep only the most recent 10 activities
+        while (activityList.children.length > 10) {
+            activityList.removeChild(activityList.lastChild);
+        }
+
+        // Update timestamps on older activities
+        this.updateActivityTimestamps();
+    }
+
+    updateActivityTimestamps() {
+        const activities = document.querySelectorAll('.activity-item .activity-time');
+        activities.forEach((timeElement, index) => {
+            if (index === 0) return; // Skip the "Just now" item
+            
+            const text = timeElement.textContent;
+            if (text.includes('Just now')) {
+                timeElement.textContent = text.replace('Just now', '1 minute ago');
+            } else if (text.includes('minute ago')) {
+                const minutes = parseInt(text.match(/(\d+)/)?.[1] || 1) + 1;
+                timeElement.textContent = text.replace(/\d+ minute/, `${minutes} minutes`);
+            }
+        });
+    }
     }
 
     toggleTaskExpansion(button) {
