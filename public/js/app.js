@@ -25,6 +25,20 @@ class NeuralWarsApp {
             console.log('✅ File Manager initialized');
         }
         
+        // Initialize team manager
+        if (window.TeamManager) {
+            this.teamManager = new TeamManager(this);
+            window.teamManager = this.teamManager; // Make globally accessible
+            console.log('✅ Team Manager initialized');
+        }
+        
+        // Initialize export manager
+        if (window.ExportManager) {
+            this.exportManager = new ExportManager(this);
+            window.exportManager = this.exportManager; // Make globally accessible
+            console.log('✅ Export Manager initialized');
+        }
+        
         // Initialize other managers when they become available
         if (window.TaskManager) {
             this.taskManager = new TaskManager(this);

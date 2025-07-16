@@ -353,14 +353,58 @@
                         <button class="btn btn-primary" onclick="logMeeting()">
                             <i class="fas fa-calendar-plus"></i> Log Meeting
                         </button>
-                        <button class="btn btn-secondary" onclick="updateStatus()">
-                            <i class="fas fa-edit"></i> Update Status
+                        <button class="btn btn-secondary refresh-team-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
                         </button>
                     </div>
                 </div>
 
                 <div class="team-grid">
-                    <div class="card team-roles">
+                    <!-- Enhanced Team Members Section -->
+                    <div class="card team-members-section">
+                        <div class="card-header">
+                            <h3><i class="fas fa-users"></i> Team Members</h3>
+                            <button class="btn btn-small" onclick="window.teamManager && window.teamManager.loadTeamData()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="team-members-grid" id="team-members-container">
+                            <!-- Team members will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Team Statistics -->
+                    <div class="card team-statistics-section">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Team Statistics</h3>
+                        </div>
+                        <div id="team-statistics-container">
+                            <!-- Statistics will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Progress Visualization -->
+                    <div class="card progress-charts-section">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar"></i> Progress Visualization</h3>
+                        </div>
+                        <div id="progress-charts-container">
+                            <!-- Charts will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="card activity-log-section">
+                        <div class="card-header">
+                            <h3><i class="fas fa-history"></i> Activity Log</h3>
+                        </div>
+                        <div id="activity-log-container">
+                            <!-- Activity log will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Original Team Roles Section (Collapsed by Default) -->
+                    <div class="card team-roles collapsed">
                         <div class="card-header">
                             <h3><i class="fas fa-user-friends"></i> Team Roles & Responsibilities</h3>
                             <button class="btn btn-small" onclick="toggleAllRoles()">
@@ -625,6 +669,26 @@
                             </button>
                             <button class="btn btn-success" data-export="tasks" data-format="pdf" title="Professional PDF with branding">
                                 <i class="fas fa-file-pdf"></i> Professional PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card export-team">
+                        <div class="card-header">
+                            <h3><i class="fas fa-users"></i> Export Team Data</h3>
+                        </div>
+                        <div class="export-options">
+                            <button class="btn btn-primary" data-export="team-data" data-format="json">
+                                <i class="fas fa-code"></i> JSON
+                            </button>
+                            <button class="btn btn-primary" data-export="team-data" data-format="csv">
+                                <i class="fas fa-table"></i> CSV
+                            </button>
+                            <button class="btn btn-primary" data-export="team-data" data-format="markdown">
+                                <i class="fas fa-markdown"></i> Markdown
+                            </button>
+                            <button class="btn btn-success" data-export="team-stats" data-format="json" title="Team statistics and performance data">
+                                <i class="fas fa-chart-bar"></i> Statistics Only
                             </button>
                         </div>
                     </div>
