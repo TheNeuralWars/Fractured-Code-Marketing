@@ -21,6 +21,7 @@ class NeuralWarsApp {
         // Initialize file manager for comprehensive file integration
         if (window.FileManager) {
             this.fileManager = new FileManager(this);
+            window.fileManager = this.fileManager; // Make globally accessible
             console.log('✅ File Manager initialized');
         }
         
