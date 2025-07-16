@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/enhanced.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -19,23 +20,121 @@
                     <span>Neural Wars Marketing</span>
                 </div>
                 <div class="nav-menu">
-                    <a href="#dashboard" class="nav-link active" data-tab="dashboard">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                    <a href="#tasks" class="nav-link" data-tab="tasks">
-                        <i class="fas fa-tasks"></i> Tasks
-                    </a>
-                    <a href="#templates" class="nav-link" data-tab="templates">
-                        <i class="fas fa-file-alt"></i> Templates
-                    </a>
-                    <a href="#team" class="nav-link" data-tab="team">
-                        <i class="fas fa-users"></i> Team
-                    </a>
+                    <div class="nav-group">
+                        <a href="#dashboard" class="nav-link active" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#dashboard/project" class="nav-sublink" data-file="PROJECT-DASHBOARD.md">
+                                <i class="fas fa-project-diagram"></i> Project Dashboard
+                            </a>
+                            <a href="#dashboard/performance" class="nav-sublink" data-file="PERFORMANCE-DASHBOARD.md">
+                                <i class="fas fa-chart-line"></i> Performance Dashboard
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <a href="#tasks" class="nav-link" data-tab="tasks">
+                            <i class="fas fa-tasks"></i> Tasks
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#tasks/daily" class="nav-sublink" data-file="DAILY-TASK-SYSTEM.md">
+                                <i class="fas fa-calendar-day"></i> Daily Task System
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <a href="#templates" class="nav-link" data-tab="templates">
+                            <i class="fas fa-file-alt"></i> Templates
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#templates/examples" class="nav-sublink" data-file="J-templates-examples.md">
+                                <i class="fas fa-images"></i> Content Examples
+                            </a>
+                            <a href="#templates/newsletter" class="nav-sublink" data-file="K-newsletter-templates.md">
+                                <i class="fas fa-envelope"></i> Newsletter Templates
+                            </a>
+                            <a href="#templates/press" class="nav-sublink" data-file="L-press-release-template.md">
+                                <i class="fas fa-newspaper"></i> Press Release
+                            </a>
+                            <a href="#templates/strategy" class="nav-sublink" data-file="M-content-strategy.md">
+                                <i class="fas fa-strategy"></i> Content Strategy
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <a href="#team" class="nav-link" data-tab="team">
+                            <i class="fas fa-users"></i> Team
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#team/coordination" class="nav-sublink" data-file="TEAM-COORDINATION.md">
+                                <i class="fas fa-handshake"></i> Team Coordination
+                            </a>
+                            <a href="#team/roles" class="nav-sublink" data-file="O-team-roles-guide.md">
+                                <i class="fas fa-user-tag"></i> Team Roles Guide
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <a href="#campaign" class="nav-link" data-tab="campaign">
+                            <i class="fas fa-rocket"></i> Campaign
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#campaign/execution" class="nav-sublink" data-file="CAMPAIGN-EXECUTION-GUIDE.md">
+                                <i class="fas fa-play-circle"></i> Execution Guide
+                            </a>
+                            <a href="#campaign/timeline" class="nav-sublink" data-file="O-master-launch-timeline.md">
+                                <i class="fas fa-timeline"></i> Launch Timeline
+                            </a>
+                            <a href="#campaign/optimization" class="nav-sublink" data-file="H-listing-optimization.md">
+                                <i class="fas fa-search-plus"></i> Listing Optimization
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <a href="#content" class="nav-link" data-tab="content">
+                            <i class="fas fa-edit"></i> Content
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#content/homepage" class="nav-sublink" data-file="N-homepage-content.md">
+                                <i class="fas fa-home"></i> Homepage Content
+                            </a>
+                            <a href="#content/tracking" class="nav-sublink" data-file="I-performance-tracking-templates.md">
+                                <i class="fas fa-analytics"></i> Performance Tracking
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <a href="#implementation" class="nav-link" data-tab="implementation">
+                            <i class="fas fa-cogs"></i> Implementation
+                        </a>
+                        <div class="nav-submenu">
+                            <a href="#implementation/complete" class="nav-sublink" data-file="IMPLEMENTATION-COMPLETE.md">
+                                <i class="fas fa-check-circle"></i> Implementation Complete
+                            </a>
+                            <a href="#implementation/readme" class="nav-sublink" data-file="MARKETING-IMPLEMENTATION-README.md">
+                                <i class="fas fa-book"></i> Implementation README
+                            </a>
+                            <a href="#implementation/getting-started" class="nav-sublink" data-file="PROJECT-GETTING-STARTED.md">
+                                <i class="fas fa-play"></i> Getting Started
+                            </a>
+                        </div>
+                    </div>
+                    
                     <a href="#export" class="nav-link" data-tab="export">
                         <i class="fas fa-download"></i> Export
                     </a>
                 </div>
                 <div class="nav-status">
+                    <button class="btn btn-small" id="global-search-btn">
+                        <i class="fas fa-search"></i> Search Files
+                    </button>
                     <button class="theme-toggle" id="theme-toggle">
                         <i class="fas fa-moon" id="theme-icon"></i>
                         <span id="theme-text">Dark</span>
@@ -298,7 +397,138 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Campaign Tab -->
+            <div id="campaign-tab" class="tab-content">
+                <div class="campaign-header">
+                    <h1>Campaign Management</h1>
+                    <div class="campaign-controls">
+                        <button class="btn btn-primary" id="view-timeline">
+                            <i class="fas fa-timeline"></i> View Timeline
+                        </button>
+                        <button class="btn btn-secondary" id="execution-guide">
+                            <i class="fas fa-play-circle"></i> Execution Guide
+                        </button>
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="file-viewer" id="campaign-file-viewer">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Tab -->
+            <div id="content-tab" class="tab-content">
+                <div class="content-header">
+                    <h1>Content Management</h1>
+                    <div class="content-controls">
+                        <input type="text" id="content-search" placeholder="Search content..." class="search-input">
+                        <button class="btn btn-primary" id="create-content">
+                            <i class="fas fa-plus"></i> Create Content
+                        </button>
+                    </div>
+                </div>
+                <div class="content-grid">
+                    <div class="content-sidebar">
+                        <div class="content-categories" id="content-categories">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="content-main">
+                        <div class="file-viewer" id="content-file-viewer">
+                            <!-- Dynamic content will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Implementation Tab -->
+            <div id="implementation-tab" class="tab-content">
+                <div class="implementation-header">
+                    <h1>Implementation Guide</h1>
+                    <div class="implementation-status">
+                        <span class="status-badge complete">Setup Complete</span>
+                        <button class="btn btn-primary" id="check-implementation">
+                            <i class="fas fa-check-double"></i> Verify Setup
+                        </button>
+                    </div>
+                </div>
+                <div class="implementation-content">
+                    <div class="implementation-grid">
+                        <div class="card implementation-checklist">
+                            <div class="card-header">
+                                <h3><i class="fas fa-clipboard-check"></i> Implementation Checklist</h3>
+                            </div>
+                            <div class="checklist-content" id="implementation-checklist">
+                                <!-- Checklist will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="card implementation-docs">
+                            <div class="card-header">
+                                <h3><i class="fas fa-book"></i> Documentation</h3>
+                            </div>
+                            <div class="docs-list" id="implementation-docs">
+                                <!-- Documentation links will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
+
+        <!-- Enhanced File Viewer Modal -->
+        <div id="file-viewer-modal" class="modal hidden">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3 id="file-viewer-title">File Viewer</h3>
+                    <div class="file-controls">
+                        <button class="btn btn-small" id="copy-file-content">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button class="btn btn-small" id="edit-file-content">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-small" id="export-file-content">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="modal-close" id="file-modal-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="file-viewer-content">
+                        <div class="file-sections" id="file-sections">
+                            <!-- File sections with expand/collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Search Modal -->
+        <div id="search-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Search Marketing Files</h3>
+                    <button class="modal-close" id="search-modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="search-form">
+                        <input type="text" id="global-search" placeholder="Search across all files..." class="search-input-large">
+                        <button class="btn btn-primary" id="perform-search">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    <div class="search-results" id="search-results">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Loading Overlay -->
         <div id="loading-overlay" class="loading-overlay hidden">
@@ -350,6 +580,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="/js/fileManager.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/tasks.js"></script>
