@@ -1,8 +1,6 @@
 {
   "version": 2,
   "name": "neural-wars-marketing-automation",
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
