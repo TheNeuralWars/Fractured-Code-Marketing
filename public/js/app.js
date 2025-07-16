@@ -197,6 +197,9 @@ class NeuralWarsApp {
         try {
             // Load dashboard data by default
             await this.loadTabData('dashboard');
+            
+            // Load saved editable content
+            loadEditableContent();
         } catch (error) {
             console.error('Failed to load initial data:', error);
             this.showNotification('Failed to load application data', 'error');
@@ -1021,6 +1024,228 @@ function updateResponsibilities(memberId) {
 
 function logCommunication(memberId) {
     app.showNotification(`Communication logging for ${memberId} - feature coming soon!`, 'info');
+}
+
+// Enhanced editable content functionality
+function toggleEditMode(cardId) {
+    const card = document.querySelector(`.${cardId}`);
+    if (!card) return;
+
+    const editButton = card.querySelector('.btn');
+    const editableContents = card.querySelectorAll('.editable-content');
+    const editHints = card.querySelectorAll('.edit-hint');
+    
+    const isEditing = editButton.innerHTML.includes('Save');
+    
+    if (isEditing) {
+        // Save mode
+        editButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
+        editButton.classList.remove('btn-success');
+        editButton.classList.add('btn-small');
+        
+        editableContents.forEach(content => {
+            content.contentEditable = 'false';
+            content.classList.remove('editing');
+            
+            // Save the content
+            const field = content.closest('.editable-field').dataset.field;
+            const value = content.textContent.trim();
+            saveEditableContent(field, value);
+        });
+        
+        editHints.forEach(hint => {
+            hint.style.display = 'block';
+            hint.textContent = 'Click Edit to modify';
+        });
+        
+        app.showNotification('Changes saved successfully!', 'success');
+    } else {
+        // Edit mode
+        editButton.innerHTML = '<i class="fas fa-save"></i> Save';
+        editButton.classList.remove('btn-small');
+        editButton.classList.add('btn-success');
+        
+        editableContents.forEach(content => {
+            content.contentEditable = 'true';
+            content.classList.add('editing');
+            content.focus();
+            
+            // Clear placeholder if it contains underscores
+            if (content.textContent.includes('___')) {
+                content.textContent = '';
+            }
+        });
+        
+        editHints.forEach(hint => {
+            hint.style.display = 'block';
+            hint.textContent = 'Type to edit, click Save when done';
+        });
+    }
+}
+
+function saveEditableContent(field, value) {
+    // Save to localStorage for persistence
+    const savedData = JSON.parse(localStorage.getItem('neural-wars-editable-content') || '{}');
+    savedData[field] = value;
+    localStorage.setItem('neural-wars-editable-content', JSON.stringify(savedData));
+    
+    // Also send to server if API exists
+    fetch('/api/content/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            field: field,
+            value: value,
+            timestamp: new Date().toISOString()
+        })
+    }).catch(error => {
+        console.log('Server save failed, using local storage only:', error);
+    });
+}
+
+function loadEditableContent() {
+    const savedData = JSON.parse(localStorage.getItem('neural-wars-editable-content') || '{}');
+    
+    Object.keys(savedData).forEach(field => {
+        const element = document.querySelector(`[data-field="${field}"] .editable-content`);
+        if (element && savedData[field]) {
+            element.textContent = savedData[field];
+        }
+    });
+}
+
+// Enhanced role management functions
+function toggleRole(roleId) {
+    const roleSection = document.querySelector(`[data-role="${roleId}"]`);
+    if (!roleSection) return;
+
+    const details = roleSection.querySelector('.role-details');
+    const arrow = roleSection.querySelector('.role-arrow i');
+    
+    if (details.classList.contains('hidden')) {
+        details.classList.remove('hidden');
+        arrow.classList.remove('fa-chevron-down');
+        arrow.classList.add('fa-chevron-up');
+    } else {
+        details.classList.add('hidden');
+        arrow.classList.remove('fa-chevron-up');
+        arrow.classList.add('fa-chevron-down');
+    }
+}
+
+function toggleAllRoles() {
+    const button = document.querySelector('[onclick="toggleAllRoles()"]');
+    const allDetails = document.querySelectorAll('.role-details');
+    const isExpanded = button.innerHTML.includes('Collapse');
+    
+    if (isExpanded) {
+        // Collapse all
+        allDetails.forEach(details => {
+            details.classList.add('hidden');
+        });
+        document.querySelectorAll('.role-arrow i').forEach(arrow => {
+            arrow.classList.remove('fa-chevron-up');
+            arrow.classList.add('fa-chevron-down');
+        });
+        button.innerHTML = '<i class="fas fa-expand-alt"></i> Expand All';
+    } else {
+        // Expand all
+        allDetails.forEach(details => {
+            details.classList.remove('hidden');
+        });
+        document.querySelectorAll('.role-arrow i').forEach(arrow => {
+            arrow.classList.remove('fa-chevron-down');
+            arrow.classList.add('fa-chevron-up');
+        });
+        button.innerHTML = '<i class="fas fa-compress-alt"></i> Collapse All';
+    }
+}
+
+function showRoleTab(roleId, tabName) {
+    const roleSection = document.querySelector(`[data-role="${roleId}"]`);
+    if (!roleSection) return;
+
+    // Update tab buttons
+    roleSection.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    roleSection.querySelector(`[onclick="showRoleTab('${roleId}', '${tabName}')"]`).classList.add('active');
+
+    // Update tab content
+    roleSection.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+    });
+    roleSection.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+}
+
+// Enhanced campaign phase management
+function togglePhase(phaseId) {
+    const phaseSection = document.querySelector(`[data-phase="${phaseId}"]`);
+    if (!phaseSection) return;
+
+    const content = phaseSection.querySelector('.phase-content');
+    const arrow = phaseSection.querySelector('.phase-arrow i');
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        arrow.classList.remove('fa-chevron-down');
+        arrow.classList.add('fa-chevron-up');
+    } else {
+        content.classList.add('hidden');
+        arrow.classList.remove('fa-chevron-up');
+        arrow.classList.add('fa-chevron-down');
+    }
+}
+
+function toggleMonth(phaseId, monthId) {
+    const monthSection = document.querySelector(`[data-phase="${phaseId}"] [data-month="${monthId}"]`);
+    if (!monthSection) return;
+
+    const content = monthSection.querySelector('.month-content');
+    const arrow = monthSection.querySelector('.month-header i');
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        arrow.classList.remove('fa-chevron-down');
+        arrow.classList.add('fa-chevron-up');
+    } else {
+        content.classList.add('hidden');
+        arrow.classList.remove('fa-chevron-up');
+        arrow.classList.add('fa-chevron-down');
+    }
+}
+
+function expandAllPhases() {
+    const button = document.querySelector('[onclick="expandAllPhases()"]');
+    const allPhaseContents = document.querySelectorAll('.phase-content');
+    const allMonthContents = document.querySelectorAll('.month-content');
+    const isExpanded = button.innerHTML.includes('Collapse');
+    
+    if (isExpanded) {
+        // Collapse all
+        allPhaseContents.forEach(content => content.classList.add('hidden'));
+        allMonthContents.forEach(content => content.classList.add('hidden'));
+        document.querySelectorAll('.phase-arrow i, .month-header i').forEach(arrow => {
+            arrow.classList.remove('fa-chevron-up');
+            arrow.classList.add('fa-chevron-down');
+        });
+        button.innerHTML = '<i class="fas fa-expand-alt"></i> Expand All Phases';
+    } else {
+        // Expand all
+        allPhaseContents.forEach(content => content.classList.remove('hidden'));
+        allMonthContents.forEach(content => content.classList.remove('hidden'));
+        document.querySelectorAll('.phase-arrow i, .month-header i').forEach(arrow => {
+            arrow.classList.remove('fa-chevron-down');
+            arrow.classList.add('fa-chevron-up');
+        });
+        button.innerHTML = '<i class="fas fa-compress-alt"></i> Collapse All Phases';
+    }
+}
+
+function showCampaignOverview() {
+    app.showNotification('Campaign overview analytics coming soon!', 'info');
 }
 
 async function exportData(type, format) {
