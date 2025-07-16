@@ -1435,12 +1435,6 @@ function setupEventListeners() {
         dayFilter.addEventListener('change', filterTasks);
     }
     
-    // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
-    
     // Refresh metrics
     const refreshBtn = document.getElementById('refresh-metrics');
     if (refreshBtn) {

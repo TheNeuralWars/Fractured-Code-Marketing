@@ -1,6 +1,7 @@
 // Tasks-specific functionality
 class TaskManager {
-    constructor() {
+    constructor(app = null) {
+        this.app = app;
         this.tasks = {};
         this.currentFilter = { person: 'all', day: 'all' };
         this.init();
