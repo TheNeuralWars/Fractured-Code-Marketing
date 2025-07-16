@@ -158,6 +158,74 @@ router.get('/dashboard/:format', async (req, res) => {
 });
 
 /**
+ * GET /api/export/team/:format
+ * Export team data in specified format
+ */
+router.get('/team/:format', async (req, res) => {
+  try {
+    const { format } = req.params;
+    
+    // Get team data from team routes
+    const teamResponse = await fetch('http://localhost:3000/api/team/members').catch(() => null);
+    const statsResponse = await fetch('http://localhost:3000/api/team/statistics').catch(() => null);
+    
+    let teamData = {};
+    let statsData = {};
+    
+    if (teamResponse && teamResponse.ok) {
+      const teamResult = await teamResponse.json();
+      teamData = teamResult.data || {};
+    }
+    
+    if (statsResponse && statsResponse.ok) {
+      const statsResult = await statsResponse.json();
+      statsData = statsResult.data || {};
+    }
+
+    const exportData = {
+      teamMembers: teamData,
+      statistics: statsData,
+      exportDate: new Date().toISOString()
+    };
+
+    switch (format.toLowerCase()) {
+      case 'json':
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Disposition', 'attachment; filename="neural-wars-team-data.json"');
+        res.json(exportData);
+        break;
+        
+      case 'csv':
+        const csvData = convertTeamDataToCSV(exportData);
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="neural-wars-team-data.csv"');
+        res.send(csvData);
+        break;
+        
+      case 'markdown':
+      case 'md':
+        const markdownData = convertTeamDataToMarkdown(exportData);
+        res.setHeader('Content-Type', 'text/markdown');
+        res.setHeader('Content-Disposition', 'attachment; filename="neural-wars-team-data.md"');
+        res.send(markdownData);
+        break;
+        
+      default:
+        res.status(400).json({
+          success: false,
+          error: 'Unsupported format. Use: json, csv, or markdown'
+        });
+    }
+  } catch (error) {
+    console.error('Export team data error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to export team data'
+    });
+  }
+});
+
+/**
  * POST /api/export/external/:service
  * Export to external productivity tools
  */
@@ -285,6 +353,50 @@ function convertDashboardToCSV(data) {
   // Add more dashboard data conversion as needed
   
   return csv;
+}
+
+function convertTeamDataToCSV(data) {
+  let csv = 'Member ID,Name,Role,Email,Phone,Skills,Completion Rate,Role Effectiveness,Tasks Completed,Total Tasks\n';
+  
+  Object.keys(data.teamMembers).forEach(memberId => {
+    const member = data.teamMembers[memberId];
+    const skills = member.skills.join('; ');
+    csv += `"${member.id}","${member.name}","${member.role}","${member.email}","${member.phone}","${skills}","${member.completionRate}%","${member.roleEffectiveness}%","${member.tasksCompleted}","${member.totalTasks}"\n`;
+  });
+  
+  return csv;
+}
+
+function convertTeamDataToMarkdown(data) {
+  let markdown = '# Neural Wars Team Data Export\n\n';
+  markdown += `Exported on: ${data.exportDate}\n\n`;
+  
+  markdown += '## Team Members\n\n';
+  
+  Object.keys(data.teamMembers).forEach(memberId => {
+    const member = data.teamMembers[memberId];
+    markdown += `### ${member.name}\n\n`;
+    markdown += `- **Role:** ${member.role}\n`;
+    markdown += `- **Email:** ${member.email}\n`;
+    markdown += `- **Phone:** ${member.phone}\n`;
+    markdown += `- **Skills:** ${member.skills.join(', ')}\n`;
+    markdown += `- **Task Completion Rate:** ${member.completionRate}%\n`;
+    markdown += `- **Role Effectiveness:** ${member.roleEffectiveness}%\n`;
+    markdown += `- **Tasks Completed:** ${member.tasksCompleted}/${member.totalTasks}\n`;
+    markdown += `- **Current Assignments:** ${member.currentAssignments.join(', ')}\n\n`;
+  });
+  
+  if (data.statistics && Object.keys(data.statistics).length > 0) {
+    markdown += '## Team Statistics\n\n';
+    const stats = data.statistics;
+    markdown += `- **Total Members:** ${stats.totalMembers}\n`;
+    markdown += `- **Average Completion Rate:** ${stats.averageCompletionRate}%\n`;
+    markdown += `- **Average Role Effectiveness:** ${stats.averageRoleEffectiveness}%\n`;
+    markdown += `- **Total Tasks Completed:** ${stats.totalTasksCompleted}\n`;
+    markdown += `- **Active Members:** ${stats.activeMembers}\n\n`;
+  }
+  
+  return markdown;
 }
 
 module.exports = router;
