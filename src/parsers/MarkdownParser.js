@@ -348,6 +348,261 @@ class MarkdownParser {
 
     return categorized;
   }
+
+  /**
+   * Parse all required marketing files for comprehensive integration
+   */
+  async parseAllMarketingFiles() {
+    const requiredFiles = [
+      'DAILY-TASK-SYSTEM.md',
+      'PROJECT-DASHBOARD.md', 
+      'TEAM-COORDINATION.md',
+      'J-templates-examples.md',
+      'CAMPAIGN-EXECUTION-GUIDE.md',
+      'H-listing-optimization.md',
+      'I-performance-tracking-templates.md',
+      'IMPLEMENTATION-COMPLETE.md',
+      'K-newsletter-templates.md',
+      'L-press-release-template.md',
+      'M-content-strategy.md',
+      'MARKETING-APP-README.md',
+      'MARKETING-IMPLEMENTATION-README.md',
+      'N-homepage-content.md',
+      'O-master-launch-timeline.md',
+      'O-team-roles-guide.md',
+      'PERFORMANCE-DASHBOARD.md',
+      'PROJECT-GETTING-STARTED.md'
+    ];
+
+    const parsedFiles = {};
+
+    for (const fileName of requiredFiles) {
+      try {
+        const parsed = await this.parseFile(fileName);
+        if (parsed) {
+          parsedFiles[fileName] = {
+            ...parsed,
+            fileName: fileName,
+            category: this.categorizeFile(fileName),
+            sections: this.extractSections(parsed.content),
+            searchableContent: this.extractSearchableContent(parsed.content),
+            lastModified: new Date().toISOString() // In real app, would get from file stats
+          };
+        }
+      } catch (error) {
+        console.error(`Failed to parse ${fileName}:`, error);
+        parsedFiles[fileName] = {
+          fileName: fileName,
+          error: error.message,
+          content: '',
+          html: '',
+          category: this.categorizeFile(fileName)
+        };
+      }
+    }
+
+    return parsedFiles;
+  }
+
+  /**
+   * Categorize files for navigation organization
+   */
+  categorizeFile(fileName) {
+    const categories = {
+      'dashboard': ['PROJECT-DASHBOARD.md', 'PERFORMANCE-DASHBOARD.md'],
+      'tasks': ['DAILY-TASK-SYSTEM.md'],
+      'team': ['TEAM-COORDINATION.md', 'O-team-roles-guide.md'],
+      'templates': ['J-templates-examples.md', 'K-newsletter-templates.md', 'L-press-release-template.md'],
+      'strategy': ['M-content-strategy.md', 'CAMPAIGN-EXECUTION-GUIDE.md', 'O-master-launch-timeline.md'],
+      'optimization': ['H-listing-optimization.md', 'I-performance-tracking-templates.md'],
+      'implementation': ['IMPLEMENTATION-COMPLETE.md', 'MARKETING-IMPLEMENTATION-README.md', 'PROJECT-GETTING-STARTED.md'],
+      'content': ['N-homepage-content.md', 'MARKETING-APP-README.md']
+    };
+
+    for (const [category, files] of Object.entries(categories)) {
+      if (files.includes(fileName)) {
+        return category;
+      }
+    }
+    return 'other';
+  }
+
+  /**
+   * Extract searchable content for filtering
+   */
+  extractSearchableContent(content) {
+    // Remove markdown formatting for better searching
+    return content
+      .replace(/[#*_`]/g, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Replace links with text
+      .replace(/\n+/g, ' ')
+      .toLowerCase();
+  }
+
+  /**
+   * Extract all sections from content for navigation
+   */
+  extractSections(content) {
+    const sections = [];
+    const lines = content.split('\n');
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+      
+      if (headingMatch) {
+        const level = headingMatch[1].length;
+        const title = headingMatch[2];
+        const anchor = this.generateAnchor(title);
+        
+        // Extract content until next heading of same or higher level
+        let content = '';
+        for (let j = i + 1; j < lines.length; j++) {
+          const nextLine = lines[j];
+          const nextHeading = nextLine.match(/^(#{1,6})\s+(.+)$/);
+          
+          if (nextHeading && nextHeading[1].length <= level) {
+            break;
+          }
+          content += nextLine + '\n';
+        }
+        
+        sections.push({
+          level,
+          title,
+          anchor,
+          content: content.trim(),
+          html: marked(content.trim())
+        });
+      }
+    }
+    
+    return sections;
+  }
+
+  /**
+   * Generate URL-friendly anchor from title
+   */
+  generateAnchor(title) {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-');
+  }
+
+  /**
+   * Parse team roles from O-team-roles-guide.md
+   */
+  async parseTeamRoles() {
+    const parsed = await this.parseFile('O-team-roles-guide.md');
+    if (!parsed) return null;
+
+    const roles = [];
+    const content = parsed.content;
+    
+    // Extract role sections
+    const roleRegex = /##\s+(Person \d+|Team Member \d+):\s*(.+?)(?=##|\n#|$)/gs;
+    let match;
+
+    while ((match = roleRegex.exec(content)) !== null) {
+      const roleTitle = match[1];
+      const roleDescription = match[2];
+      
+      roles.push({
+        id: roleTitle.toLowerCase().replace(/\s+/g, '-'),
+        title: roleTitle,
+        description: roleDescription.trim(),
+        responsibilities: this.extractResponsibilities(roleDescription),
+        status: 'active'
+      });
+    }
+
+    return roles;
+  }
+
+  /**
+   * Extract responsibilities from role description
+   */
+  extractResponsibilities(description) {
+    const responsibilities = [];
+    const lines = description.split('\n');
+    
+    for (const line of lines) {
+      if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+        responsibilities.push(line.trim().substring(2));
+      }
+    }
+    
+    return responsibilities;
+  }
+
+  /**
+   * Parse launch timeline from O-master-launch-timeline.md
+   */
+  async parseLaunchTimeline() {
+    const parsed = await this.parseFile('O-master-launch-timeline.md');
+    if (!parsed) return null;
+
+    const timeline = {
+      overview: {},
+      phases: [],
+      milestones: []
+    };
+
+    const content = parsed.content;
+    
+    // Extract overview information
+    timeline.overview = {
+      duration: this.extractValue(content, 'Total Campaign Duration'),
+      prelaunch: this.extractValue(content, 'Pre-Launch Phase'),
+      launch: this.extractValue(content, 'Launch Week'),
+      postlaunch: this.extractValue(content, 'Post-Launch Momentum'),
+      team: this.extractValue(content, 'Team Commitment'),
+      budget: this.extractValue(content, 'Budget Range')
+    };
+
+    // Extract phases
+    const phaseRegex = /##\s+(Phase \d+|Month \d+):\s*(.+?)(?=##|\n#|$)/gs;
+    let match;
+
+    while ((match = phaseRegex.exec(content)) !== null) {
+      const phaseTitle = match[1];
+      const phaseContent = match[2];
+      
+      timeline.phases.push({
+        id: phaseTitle.toLowerCase().replace(/\s+/g, '-'),
+        title: phaseTitle,
+        description: this.extractFirstParagraph(phaseContent),
+        content: phaseContent.trim(),
+        tasks: this.extractTasksFromSection(phaseContent)
+      });
+    }
+
+    return timeline;
+  }
+
+  /**
+   * Extract a value from content using pattern matching
+   */
+  extractValue(content, label) {
+    const regex = new RegExp(`\\*\\*${label}\\*\\*:?\\s*(.+?)(?=\\n|$)`, 'i');
+    const match = content.match(regex);
+    return match ? match[1].trim() : '';
+  }
+
+  /**
+   * Extract first paragraph from content
+   */
+  extractFirstParagraph(content) {
+    const lines = content.split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('**') && !trimmed.startsWith('-')) {
+        return trimmed;
+      }
+    }
+    return '';
+  }
 }
 
 module.exports = MarkdownParser;

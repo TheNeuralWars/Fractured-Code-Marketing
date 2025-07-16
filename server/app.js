@@ -11,6 +11,7 @@ const taskRoutes = require('./routes/tasks');
 const templateRoutes = require('./routes/templates');
 const teamRoutes = require('./routes/team');
 const exportRoutes = require('./routes/export');
+const filesRoutes = require('./routes/files');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +47,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/templates', templateRoutes);
 app.use('/api/team', teamRoutes);
 app.use('/api/export', exportRoutes);
+app.use('/api/files', filesRoutes);
 
 // Main application route
 app.get('/', (req, res) => {

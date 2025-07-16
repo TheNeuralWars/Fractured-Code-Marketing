@@ -3,14 +3,37 @@ class NeuralWarsApp {
     constructor() {
         this.currentTab = 'dashboard';
         this.apiBase = '/api';
+        this.fileManager = null;
+        this.taskManager = null;
+        this.templateManager = null;
         this.init();
     }
 
     init() {
         console.log('🚀 Neural Wars Marketing Automation Started');
         this.setupEventListeners();
+        this.initializeManagers();
         this.loadInitialData();
         this.initializeTheme();
+    }
+
+    initializeManagers() {
+        // Initialize file manager for comprehensive file integration
+        if (window.FileManager) {
+            this.fileManager = new FileManager(this);
+            console.log('✅ File Manager initialized');
+        }
+        
+        // Initialize other managers when they become available
+        if (window.TaskManager) {
+            this.taskManager = new TaskManager(this);
+            console.log('✅ Task Manager initialized');
+        }
+        
+        if (window.TemplateManager) {
+            this.templateManager = new TemplateManager(this);
+            console.log('✅ Template Manager initialized');
+        }
     }
 
     initializeTheme() {
@@ -107,6 +130,15 @@ class NeuralWarsApp {
             case 'team':
                 await this.loadTeamData();
                 break;
+            case 'campaign':
+                await this.loadCampaignData();
+                break;
+            case 'content':
+                await this.loadContentData();
+                break;
+            case 'implementation':
+                await this.loadImplementationData();
+                break;
             case 'export':
                 // Export tab doesn't need initial data loading
                 break;
@@ -147,13 +179,55 @@ class NeuralWarsApp {
         try {
             const [coordination, roles] = await Promise.all([
                 this.apiCall('/team/coordination'),
-                this.apiCall('/team/roles')
+                this.apiCall('/files/roles/team')
             ]);
 
             this.updateTeamCoordination(coordination.data);
             this.updateTeamRoles(roles.data);
         } catch (error) {
             console.error('Failed to load team data:', error);
+        }
+    }
+
+    async loadCampaignData() {
+        try {
+            const [timeline, execution] = await Promise.all([
+                this.apiCall('/files/timeline/launch'),
+                this.apiCall('/files/CAMPAIGN-EXECUTION-GUIDE.md')
+            ]);
+
+            this.updateCampaignTimeline(timeline.data);
+            this.displayCampaignContent(execution.data);
+        } catch (error) {
+            console.error('Failed to load campaign data:', error);
+        }
+    }
+
+    async loadContentData() {
+        try {
+            const [homepage, strategy] = await Promise.all([
+                this.apiCall('/files/N-homepage-content.md'),
+                this.apiCall('/files/M-content-strategy.md')
+            ]);
+
+            this.displayContentFiles([homepage.data, strategy.data]);
+        } catch (error) {
+            console.error('Failed to load content data:', error);
+        }
+    }
+
+    async loadImplementationData() {
+        try {
+            const [complete, readme, gettingStarted] = await Promise.all([
+                this.apiCall('/files/IMPLEMENTATION-COMPLETE.md'),
+                this.apiCall('/files/MARKETING-IMPLEMENTATION-README.md'),
+                this.apiCall('/files/PROJECT-GETTING-STARTED.md')
+            ]);
+
+            this.displayImplementationChecklist(complete.data);
+            this.displayImplementationDocs([readme.data, gettingStarted.data]);
+        } catch (error) {
+            console.error('Failed to load implementation data:', error);
         }
     }
 
@@ -426,6 +500,10 @@ class NeuralWarsApp {
     }
 
     showNotification(message, type = 'info') {
+        this.showToast(message, type);
+    }
+
+    showToast(message, type = 'info') {
         // Create a simple notification system
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
@@ -470,6 +548,222 @@ class NeuralWarsApp {
                 }
             }, 300);
         }, 3000);
+    }
+
+    updateCampaignTimeline(timeline) {
+        const viewer = document.getElementById('campaign-file-viewer');
+        if (!viewer || !timeline) return;
+
+        viewer.innerHTML = `
+            <div class="timeline-overview">
+                <h3>Campaign Timeline Overview</h3>
+                <div class="timeline-stats">
+                    <div class="stat">
+                        <span class="stat-value">${timeline.overview.duration || '9 months'}</span>
+                        <span class="stat-label">Total Duration</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">${timeline.overview.team || '3 people'}</span>
+                        <span class="stat-label">Team Size</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">${timeline.overview.budget || '$2,500'}</span>
+                        <span class="stat-label">Budget</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-phases">
+                <h3>Campaign Phases</h3>
+                <div class="phases-list">
+                    ${timeline.phases ? timeline.phases.map(phase => `
+                        <div class="phase-item">
+                            <h4>${phase.title}</h4>
+                            <p>${phase.description}</p>
+                            <div class="phase-tasks">
+                                ${phase.tasks ? phase.tasks.slice(0, 3).map(task => 
+                                    `<span class="task-badge">${task.text}</span>`
+                                ).join('') : ''}
+                            </div>
+                        </div>
+                    `).join('') : '<p>Timeline data loading...</p>'}
+                </div>
+            </div>
+        `;
+    }
+
+    displayCampaignContent(content) {
+        // This would be integrated with the timeline display
+        console.log('Campaign content loaded:', content);
+    }
+
+    displayContentFiles(files) {
+        const viewer = document.getElementById('content-file-viewer');
+        const categories = document.getElementById('content-categories');
+        
+        if (!viewer || !files) return;
+
+        // Update categories sidebar
+        if (categories) {
+            categories.innerHTML = `
+                <div class="category-list">
+                    <div class="category-item active" data-category="all">
+                        <i class="fas fa-list"></i> All Content
+                    </div>
+                    <div class="category-item" data-category="homepage">
+                        <i class="fas fa-home"></i> Homepage
+                    </div>
+                    <div class="category-item" data-category="strategy">
+                        <i class="fas fa-strategy"></i> Strategy
+                    </div>
+                    <div class="category-item" data-category="templates">
+                        <i class="fas fa-file-alt"></i> Templates
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display content files
+        viewer.innerHTML = `
+            <div class="content-files">
+                ${files.map(file => `
+                    <div class="content-file-card">
+                        <div class="file-header">
+                            <h3>${file.fileName.replace('.md', '').replace(/-/g, ' ')}</h3>
+                            <div class="file-actions">
+                                <button class="btn btn-small view-file" data-filename="${file.fileName}">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-small copy-file" data-filename="${file.fileName}">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="file-preview">
+                            ${file.html ? file.html.substring(0, 300) + '...' : file.content.substring(0, 300) + '...'}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        // Add event listeners for file actions
+        viewer.querySelectorAll('.view-file').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const fileName = btn.dataset.filename;
+                if (this.fileManager) {
+                    this.fileManager.loadFile(fileName);
+                }
+            });
+        });
+
+        viewer.querySelectorAll('.copy-file').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const fileName = btn.dataset.filename;
+                const file = files.find(f => f.fileName === fileName);
+                if (file) {
+                    try {
+                        await navigator.clipboard.writeText(file.content);
+                        this.showToast('File content copied to clipboard', 'success');
+                    } catch (error) {
+                        this.showToast('Failed to copy content', 'error');
+                    }
+                }
+            });
+        });
+    }
+
+    displayImplementationChecklist(data) {
+        const checklist = document.getElementById('implementation-checklist');
+        if (!checklist || !data) return;
+
+        // Extract checklist items from the implementation complete file
+        const checklistItems = this.extractChecklistItems(data.content);
+        
+        checklist.innerHTML = `
+            <div class="implementation-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%"></div>
+                </div>
+                <span class="progress-text">85% Complete</span>
+            </div>
+            <div class="checklist-items">
+                ${checklistItems.map((item, index) => `
+                    <div class="checklist-item ${item.completed ? 'completed' : ''}">
+                        <input type="checkbox" ${item.completed ? 'checked' : ''} 
+                               onchange="app.toggleImplementationItem(${index}, this.checked)">
+                        <span class="item-text">${item.text}</span>
+                        ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    displayImplementationDocs(docs) {
+        const docsList = document.getElementById('implementation-docs');
+        if (!docsList || !docs) return;
+
+        docsList.innerHTML = `
+            <div class="docs-list">
+                ${docs.map(doc => `
+                    <div class="doc-item">
+                        <div class="doc-header">
+                            <h4>${doc.fileName.replace('.md', '').replace(/-/g, ' ')}</h4>
+                            <button class="btn btn-small view-doc" data-filename="${doc.fileName}">
+                                <i class="fas fa-external-link-alt"></i> Open
+                            </button>
+                        </div>
+                        <p class="doc-description">
+                            ${doc.content.substring(0, 150)}...
+                        </p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        // Add event listeners
+        docsList.querySelectorAll('.view-doc').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const fileName = btn.dataset.filename;
+                if (this.fileManager) {
+                    this.fileManager.loadFile(fileName);
+                }
+            });
+        });
+    }
+
+    extractChecklistItems(content) {
+        const items = [];
+        const lines = content.split('\n');
+        
+        lines.forEach(line => {
+            if (line.match(/^- \[[ x]\]/)) {
+                const completed = line.includes('[x]');
+                const text = line.replace(/^- \[[ x]\]\s*/, '').replace(/\*\*/g, '');
+                items.push({
+                    text: text,
+                    completed: completed,
+                    description: ''
+                });
+            }
+        });
+
+        return items;
+    }
+
+    toggleImplementationItem(index, checked) {
+        // In a real application, this would save the state
+        this.showToast(checked ? 'Item marked as complete' : 'Item marked as incomplete', 'info');
+    }
+
+    updateTeamCoordination(data) {
+        // Enhanced team coordination display
+        console.log('Team coordination data loaded:', data);
+    }
+
+    updateTeamRoles(data) {
+        // Enhanced team roles display
+        console.log('Team roles data loaded:', data);
     }
 
     showModal(modalId) {
