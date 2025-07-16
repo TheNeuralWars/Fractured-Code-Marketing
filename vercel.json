@@ -4,22 +4,22 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/app.js"
+      "dest": "api/app.js"
     },
     {
       "src": "/health",
-      "dest": "server/app.js"
+      "dest": "api/app.js"
     },
     {
       "src": "/(.*)",
-      "dest": "server/app.js"
+      "dest": "api/app.js"
     }
   ],
   "env": {
     "NODE_ENV": "production"
   },
   "functions": {
-    "server/app.js": {
+    "api/app.js": {
       "maxDuration": 30
     }
   }
