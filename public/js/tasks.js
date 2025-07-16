@@ -1,6 +1,9 @@
 // Tasks-specific functionality
+console.log('🔧 Tasks.js loading...');
+
 class TaskManager {
-    constructor() {
+    constructor(app = null) {
+        this.app = app;
         this.tasks = {};
         this.currentFilter = { person: 'all', day: 'all' };
         this.init();
@@ -332,7 +335,6 @@ class TaskManager {
             setTimeout(() => notification.remove(), 300);
         });
     }
-    }
 
     toggleTaskExpansion(button) {
         const taskItem = button.closest('.task-item');
@@ -491,22 +493,8 @@ function openDocumentation(docName) {
     this.showNotification(`Opening ${docName}`, 'info');
 }
 
-// Expose TaskManager class globally and initialize
+// Expose TaskManager class globally 
 if (typeof window !== 'undefined') {
     window.TaskManager = TaskManager;
-    
-    // Initialize task manager immediately if DOM is ready, otherwise wait for DOMContentLoaded
-    function initTaskManager() {
-        if (!window.taskManager) {
-            window.taskManager = new TaskManager();
-            console.log('✅ Task Manager initialized');
-        }
-    }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTaskManager);
-    } else {
-        // DOM is already ready
-        initTaskManager();
-    }
+    console.log('✅ TaskManager class exposed globally');
 }
