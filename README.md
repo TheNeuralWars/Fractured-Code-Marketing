@@ -35,6 +35,11 @@ The marketing automation app can be deployed to **Vercel** for immediate use:
 
 ## 📋 Quick Implementation Guide
 
+### 🚀 **NEW: One-Click Vercel Deployment**
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/TheNeuralWars/Fractured-Code-Marketing&env=NODE_ENV&envDescription=Required%20environment%20variables)
+
+**📖 [Complete Deployment Guide](./VERCEL-DEPLOYMENT.md)** | **⚡ [Quick Setup Instructions](#deploying-to-vercel)**
+
 ### For Team Coordinators (Start Here)
 1. **Read** [`CAMPAIGN-EXECUTION-GUIDE.md`](./CAMPAIGN-EXECUTION-GUIDE.md) - Complete integration guide
 2. **Setup** [`PROJECT-DASHBOARD.md`](./PROJECT-DASHBOARD.md) - Central command center
@@ -380,135 +385,4 @@ The narrative proves that science fiction can address fundamental questions abou
 
 ---
 
-## 💻 Development Setup
 
-### Prerequisites
-- Node.js 18+ installed
-- npm or yarn package manager
-- Git for version control
-
-### Local Development
-```bash
-# Clone the repository
-git clone https://github.com/TheNeuralWars/Fractured-Code-Marketing.git
-cd Fractured-Code-Marketing
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Or start production server
-npm start
-```
-
-### Environment Variables
-Create a `.env` file in the root directory (optional):
-```env
-NODE_ENV=development
-PORT=3000
-```
-
-### API Endpoints
-- `GET /` - Main application dashboard
-- `GET /health` - Health check endpoint
-- `GET /api/dashboard` - Dashboard data API
-- `GET /api/tasks` - Task management API
-- `GET /api/templates` - Template library API
-- `GET /api/team` - Team coordination API
-- `GET /api/export` - Export functionality API
-- `GET /api/files` - File management API
-
-## 🚀 Deployment to Vercel
-
-### Quick Deploy
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTheNeuralWars%2FFractured-Code-Marketing)
-
-### Manual Deployment
-1. Install Vercel CLI: `npm install -g vercel`
-2. Login: `vercel login`
-3. Deploy: `npm run deploy`
-4. Production: `npm run deploy:prod`
-
-### Configuration Files
-- `vercel.json` - Vercel deployment configuration
-- `.vercelignore` - Files to exclude from deployment
-- `DEPLOYMENT.md` - Complete deployment guide
-
-## 📁 Project Structure
-
-```
-Fractured-Code-Marketing/
-├── server/                 # Node.js Express server
-│   ├── app.js             # Main application entry point
-│   └── routes/            # API route handlers
-├── public/                # Static frontend assets
-│   ├── index.html         # Main application UI
-│   ├── css/               # Stylesheets
-│   └── js/                # Client-side JavaScript
-├── src/                   # Source utilities
-│   └── parsers/           # Markdown and content parsers
-├── marketing-app/         # Additional marketing resources
-├── vercel.json            # Vercel deployment config
-├── .vercelignore          # Vercel ignore rules
-├── DEPLOYMENT.md          # Deployment instructions
-├── package.json           # Node.js dependencies and scripts
-└── [Marketing Content]    # Campaign documents and templates
-```
-
-## 🔧 Available Scripts
-
-- `npm start` - Start production server
-- `npm run dev` - Start development server with nodemon
-- `npm run build` - Build for production (static assets)
-- `npm run deploy` - Deploy to Vercel preview
-- `npm run deploy:prod` - Deploy to Vercel production
-
-## 🌟 Features
-
-### Marketing Automation
-- Campaign planning and execution tools
-- Performance tracking and analytics
-- Content template management
-- Team coordination workflows
-
-### Technical Features
-- RESTful API architecture
-- Static file serving
-- Markdown content processing
-- Security headers and CORS
-- Health monitoring endpoints
-- Vercel serverless compatibility
-
-## 📖 Documentation
-
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Complete deployment guide
-- [PROJECT-GETTING-STARTED.md](./PROJECT-GETTING-STARTED.md) - Project setup guide
-- [CAMPAIGN-EXECUTION-GUIDE.md](./CAMPAIGN-EXECUTION-GUIDE.md) - Marketing campaign guide
-- [TEAM-COORDINATION.md](./TEAM-COORDINATION.md) - Team workflow documentation
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Commit changes: `git commit -am 'Add new feature'`
-4. Push to branch: `git push origin feature/new-feature`
-5. Submit a Pull Request
-
-## 📄 License
-
-This project is licensed under the ISC License - see the package.json file for details.
-
-## 🆘 Support
-
-- Create an issue for bug reports or feature requests
-- Check [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment troubleshooting
-- Review existing documentation for setup questions
-
----
-
-**Last Updated**: December 2024  
-**Version**: 1.0.0  
-**Node.js**: 18+  
-**Vercel Compatible**: ✅
