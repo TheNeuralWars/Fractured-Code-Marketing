@@ -126,26 +126,30 @@ class FileManager {
         const title = document.getElementById('file-viewer-title');
         const sections = document.getElementById('file-sections');
 
-        title.textContent = fileData.fileName.replace('.md', '').replace(/-/g, ' ');
+        // Enhanced title with file type indicator
+        title.innerHTML = `
+            <span class="file-type-badge">${this.getFileTypeIcon(fileData.fileName)}</span>
+            ${fileData.fileName.replace('.md', '').replace(/-/g, ' ')}
+        `;
+        
+        // Add breadcrumb navigation
+        this.createBreadcrumbs(fileData);
         
         // Clear previous content
         sections.innerHTML = '';
 
-        // Create expandable sections
-        if (fileData.sections && fileData.sections.length > 0) {
-            fileData.sections.forEach((section, index) => {
-                const sectionDiv = this.createExpandableSection(section, index);
-                sections.appendChild(sectionDiv);
-            });
-        } else {
-            // If no sections, display full content
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'file-content';
-            contentDiv.innerHTML = fileData.html || `<pre>${fileData.content}</pre>`;
-            sections.appendChild(contentDiv);
-        }
+        // Adaptive content display based on file type and length
+        const adaptiveContainer = this.createAdaptiveContainer(fileData);
+        sections.appendChild(adaptiveContainer);
+
+        // Add back navigation and enhanced controls
+        this.addEnhancedControls(fileData);
 
         modal.classList.remove('hidden');
+        
+        // Focus management for accessibility
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
 
     createExpandableSection(section, index) {
@@ -334,6 +338,389 @@ class FileManager {
     closeFileModal() {
         const modal = document.getElementById('file-viewer-modal');
         modal.classList.add('hidden');
+        
+        // Restore body scrolling
+        document.body.style.overflow = '';
+        modal.setAttribute('aria-hidden', 'true');
+        
+        // Clean up breadcrumbs
+        const breadcrumbs = document.querySelector('.file-breadcrumbs');
+        if (breadcrumbs) {
+            breadcrumbs.remove();
+        }
+    }
+
+    getFileTypeIcon(fileName) {
+        const fileType = this.categorizeFileType(fileName);
+        const icons = {
+            'dashboard': '📊',
+            'tasks': '✅',
+            'team': '👥',
+            'templates': '📄',
+            'strategy': '🎯',
+            'optimization': '🔧',
+            'implementation': '⚙️',
+            'content': '📝',
+            'other': '📋'
+        };
+        return icons[fileType] || icons.other;
+    }
+
+    categorizeFileType(fileName) {
+        const categories = {
+            'dashboard': ['PROJECT-DASHBOARD.md', 'PERFORMANCE-DASHBOARD.md'],
+            'tasks': ['DAILY-TASK-SYSTEM.md'],
+            'team': ['TEAM-COORDINATION.md', 'O-team-roles-guide.md'],
+            'templates': ['J-templates-examples.md', 'K-newsletter-templates.md', 'L-press-release-template.md'],
+            'strategy': ['M-content-strategy.md', 'CAMPAIGN-EXECUTION-GUIDE.md', 'O-master-launch-timeline.md'],
+            'optimization': ['H-listing-optimization.md', 'I-performance-tracking-templates.md'],
+            'implementation': ['IMPLEMENTATION-COMPLETE.md', 'MARKETING-IMPLEMENTATION-README.md', 'PROJECT-GETTING-STARTED.md'],
+            'content': ['N-homepage-content.md', 'MARKETING-APP-README.md']
+        };
+
+        for (const [category, files] of Object.entries(categories)) {
+            if (files.includes(fileName)) {
+                return category;
+            }
+        }
+        return 'other';
+    }
+
+    createBreadcrumbs(fileData) {
+        const existingBreadcrumbs = document.querySelector('.file-breadcrumbs');
+        if (existingBreadcrumbs) {
+            existingBreadcrumbs.remove();
+        }
+
+        const breadcrumbs = document.createElement('div');
+        breadcrumbs.className = 'file-breadcrumbs';
+        breadcrumbs.innerHTML = `
+            <nav aria-label="File navigation breadcrumbs">
+                <button class="breadcrumb-item" onclick="fileManager.goBack()">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item current">
+                    ${this.getFileTypeIcon(fileData.fileName)} ${this.categorizeFileType(fileData.fileName)}
+                </span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item current">${fileData.fileName.replace('.md', '').replace(/-/g, ' ')}</span>
+            </nav>
+        `;
+
+        const modalHeader = document.querySelector('.modal-header');
+        modalHeader.insertBefore(breadcrumbs, modalHeader.querySelector('.file-controls'));
+    }
+
+    createAdaptiveContainer(fileData) {
+        const container = document.createElement('div');
+        container.className = 'adaptive-file-container';
+
+        // Determine content length and complexity
+        const contentLength = fileData.content.length;
+        const hasLists = fileData.content.includes('- [');
+        const hasTables = fileData.content.includes('|');
+        const sectionCount = fileData.sections ? fileData.sections.length : 0;
+
+        // Adaptive display based on content characteristics
+        if (contentLength > 10000 || sectionCount > 10) {
+            // Long documents - use table of contents + collapsible sections
+            container.appendChild(this.createTableOfContents(fileData));
+            container.appendChild(this.createCollapsibleSections(fileData));
+        } else if (hasLists || hasTables) {
+            // Documents with actionable content - use interactive format
+            container.appendChild(this.createInteractiveContent(fileData));
+        } else {
+            // Short documents - use continuous format
+            container.appendChild(this.createContinuousContent(fileData));
+        }
+
+        return container;
+    }
+
+    createTableOfContents(fileData) {
+        const toc = document.createElement('div');
+        toc.className = 'table-of-contents';
+        toc.innerHTML = `
+            <div class="toc-header">
+                <h4><i class="fas fa-list"></i> Table of Contents</h4>
+                <button class="toc-toggle" onclick="this.parentElement.parentElement.classList.toggle('collapsed')">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="toc-content">
+                ${this.generateTOCList(fileData)}
+            </div>
+        `;
+        return toc;
+    }
+
+    generateTOCList(fileData) {
+        if (!fileData.sections || fileData.sections.length === 0) {
+            return '<p>No sections found</p>';
+        }
+
+        return `
+            <ul class="toc-list">
+                ${fileData.sections.map((section, index) => `
+                    <li class="toc-item level-${section.level}">
+                        <a href="#section-${index}" onclick="fileManager.scrollToSection(${index})">
+                            ${section.title}
+                        </a>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+    }
+
+    createCollapsibleSections(fileData) {
+        const sectionsContainer = document.createElement('div');
+        sectionsContainer.className = 'collapsible-sections';
+
+        if (fileData.sections && fileData.sections.length > 0) {
+            fileData.sections.forEach((section, index) => {
+                const sectionDiv = this.createEnhancedExpandableSection(section, index);
+                sectionsContainer.appendChild(sectionDiv);
+            });
+        } else {
+            // If no sections, display full content
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'file-content';
+            contentDiv.innerHTML = fileData.html || `<pre>${fileData.content}</pre>`;
+            sectionsContainer.appendChild(contentDiv);
+        }
+
+        return sectionsContainer;
+    }
+
+    createEnhancedExpandableSection(section, index) {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'expandable-section';
+        sectionDiv.id = `section-${index}`;
+        
+        const isTaskSection = this.hasActionableItems(section.content);
+        const sectionClass = isTaskSection ? 'task-section' : 'content-section';
+        
+        sectionDiv.innerHTML = `
+            <div class="section-header ${sectionClass}">
+                <h${section.level} class="section-title">
+                    ${isTaskSection ? '<i class="fas fa-tasks"></i>' : '<i class="fas fa-file-text"></i>'}
+                    ${section.title}
+                </h${section.level}>
+                <div class="section-controls">
+                    ${isTaskSection ? this.createTaskControls() : ''}
+                    <button class="btn btn-small" onclick="fileManager.copySection(${index})">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    <button class="btn btn-small" onclick="fileManager.editSection(${index})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="section-toggle" onclick="fileManager.toggleSectionNew(${index})">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="section-content expanded">
+                ${isTaskSection ? this.renderTaskContent(section) : section.html}
+            </div>
+        `;
+        
+        return sectionDiv;
+    }
+
+    hasActionableItems(content) {
+        return content.includes('- [ ]') || content.includes('- [x]') || content.includes('|') || content.includes('**Action:**');
+    }
+
+    createTaskControls() {
+        return `
+            <button class="btn btn-small btn-task" onclick="fileManager.markAllComplete(this)">
+                <i class="fas fa-check-double"></i> Mark All Complete
+            </button>
+            <button class="btn btn-small btn-task" onclick="fileManager.expandAll(this)">
+                <i class="fas fa-expand-alt"></i> Expand All
+            </button>
+        `;
+    }
+
+    renderTaskContent(section) {
+        let content = section.html;
+        
+        // Make checkboxes interactive
+        content = content.replace(
+            /<input type="checkbox" disabled>/g,
+            '<input type="checkbox" onchange="fileManager.toggleTask(this)">'
+        );
+        
+        // Add progress indicators
+        const totalTasks = (content.match(/type="checkbox"/g) || []).length;
+        const completedTasks = (content.match(/checked/g) || []).length;
+        const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        
+        const progressBar = `
+            <div class="task-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                <span class="progress-text">${completedTasks}/${totalTasks} tasks completed (${progress}%)</span>
+            </div>
+        `;
+        
+        return progressBar + content;
+    }
+
+    createInteractiveContent(fileData) {
+        const container = document.createElement('div');
+        container.className = 'interactive-content';
+        
+        // Enhanced content with interactive elements
+        let content = fileData.html || fileData.content;
+        
+        // Make all checkboxes interactive
+        content = content.replace(
+            /<input type="checkbox" disabled>/g,
+            '<input type="checkbox" onchange="fileManager.toggleTask(this)">'
+        );
+        
+        // Enhance tables with sorting and filtering
+        content = this.enhanceTables(content);
+        
+        container.innerHTML = content;
+        return container;
+    }
+
+    enhanceTables(content) {
+        // Add sorting capabilities to tables
+        return content.replace(
+            /<table>/g,
+            '<div class="enhanced-table"><table class="sortable">'
+        ).replace(
+            /<\/table>/g,
+            '</table></div>'
+        );
+    }
+
+    createContinuousContent(fileData) {
+        const container = document.createElement('div');
+        container.className = 'continuous-content';
+        container.innerHTML = fileData.html || `<pre>${fileData.content}</pre>`;
+        return container;
+    }
+
+    addEnhancedControls(fileData) {
+        const controls = document.querySelector('.file-controls');
+        
+        // Add additional control buttons
+        const enhancedControls = document.createElement('div');
+        enhancedControls.className = 'enhanced-controls';
+        enhancedControls.innerHTML = `
+            <button class="btn btn-small" onclick="fileManager.printFile()">
+                <i class="fas fa-print"></i> Print
+            </button>
+            <button class="btn btn-small" onclick="fileManager.fullScreen()">
+                <i class="fas fa-expand"></i> Full Screen
+            </button>
+            <button class="btn btn-small" onclick="fileManager.shareFile()">
+                <i class="fas fa-share"></i> Share
+            </button>
+        `;
+        
+        controls.insertBefore(enhancedControls, controls.lastElementChild);
+    }
+
+    // Enhanced interaction methods
+    scrollToSection(index) {
+        const section = document.getElementById(`section-${index}`);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            section.classList.add('highlighted');
+            setTimeout(() => section.classList.remove('highlighted'), 2000);
+        }
+    }
+
+    toggleSectionNew(index) {
+        const section = document.getElementById(`section-${index}`);
+        const content = section.querySelector('.section-content');
+        const toggle = section.querySelector('.section-toggle i');
+        
+        content.classList.toggle('expanded');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+    }
+
+    toggleTask(checkbox) {
+        const listItem = checkbox.closest('li');
+        if (listItem) {
+            listItem.classList.toggle('completed', checkbox.checked);
+        }
+        
+        // Update progress bar if it exists
+        this.updateTaskProgress(checkbox);
+    }
+
+    updateTaskProgress(checkbox) {
+        const section = checkbox.closest('.section-content');
+        const progressBar = section.querySelector('.task-progress');
+        
+        if (progressBar) {
+            const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+            const total = checkboxes.length;
+            const completed = section.querySelectorAll('input[type="checkbox"]:checked').length;
+            const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            const progressFill = progressBar.querySelector('.progress-fill');
+            const progressText = progressBar.querySelector('.progress-text');
+            
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${completed}/${total} tasks completed (${progress}%)`;
+        }
+    }
+
+    markAllComplete(button) {
+        const section = button.closest('.expandable-section');
+        const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+            this.toggleTask(checkbox);
+        });
+    }
+
+    expandAll(button) {
+        const sections = document.querySelectorAll('.expandable-section');
+        sections.forEach((section, index) => {
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle i');
+            
+            if (!content.classList.contains('expanded')) {
+                content.classList.add('expanded');
+                toggle.classList.remove('fa-chevron-down');
+                toggle.classList.add('fa-chevron-up');
+            }
+        });
+    }
+
+    printFile() {
+        window.print();
+    }
+
+    fullScreen() {
+        const modal = document.getElementById('file-viewer-modal');
+        if (modal.requestFullscreen) {
+            modal.requestFullscreen();
+        }
+    }
+
+    shareFile() {
+        const url = window.location.href;
+        navigator.share ? 
+            navigator.share({ url }) : 
+            navigator.clipboard.writeText(url);
+        this.app.showToast('File link copied to clipboard', 'success');
+    }
+
+    goBack() {
+        this.closeFileModal();
     }
 
     openSearchModal() {
