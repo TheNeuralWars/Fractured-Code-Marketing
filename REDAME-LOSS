@@ -1,0 +1,343 @@
+<<<<<<< copilot/fix-470ad259-2faf-429b-ba6e-af8c79750c4b
+## 💻 Development Setup
+
+### Prerequisites
+- Node.js 18+ installed
+- npm or yarn package manager
+- Git for version control
+
+### Local Development
+```bash
+# Clone the repository
+git clone https://github.com/TheNeuralWars/Fractured-Code-Marketing.git
+cd Fractured-Code-Marketing
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Or start production server
+npm start
+```
+
+### Environment Variables
+Create a `.env` file in the root directory (optional):
+```env
+NODE_ENV=development
+PORT=3000
+```
+
+### API Endpoints
+- `GET /` - Main application dashboard
+- `GET /health` - Health check endpoint
+- `GET /api/dashboard` - Dashboard data API
+- `GET /api/tasks` - Task management API
+- `GET /api/templates` - Template library API
+- `GET /api/team` - Team coordination API
+- `GET /api/export` - Export functionality API
+- `GET /api/files` - File management API
+
+## 🚀 Deployment to Vercel
+
+### Quick Deploy
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTheNeuralWars%2FFractured-Code-Marketing)
+
+### Manual Deployment
+1. Install Vercel CLI: `npm install -g vercel`
+2. Login: `vercel login`
+3. Deploy: `npm run deploy`
+4. Production: `npm run deploy:prod`
+
+### Configuration Files
+- `vercel.json` - Vercel deployment configuration
+- `.vercelignore` - Files to exclude from deployment
+- `DEPLOYMENT.md` - Complete deployment guide
+
+## 📁 Project Structure
+
+```
+Fractured-Code-Marketing/
+├── server/                 # Node.js Express server
+│   ├── app.js             # Main application entry point
+│   └── routes/            # API route handlers
+├── public/                # Static frontend assets
+│   ├── index.html         # Main application UI
+│   ├── css/               # Stylesheets
+│   └── js/                # Client-side JavaScript
+├── src/                   # Source utilities
+│   └── parsers/           # Markdown and content parsers
+├── marketing-app/         # Additional marketing resources
+├── vercel.json            # Vercel deployment config
+├── .vercelignore          # Vercel ignore rules
+├── DEPLOYMENT.md          # Deployment instructions
+├── package.json           # Node.js dependencies and scripts
+└── [Marketing Content]    # Campaign documents and templates
+```
+
+## 🔧 Available Scripts
+
+- `npm start` - Start production server
+- `npm run dev` - Start development server with nodemon
+- `npm run build` - Build for production (static assets)
+- `npm run deploy` - Deploy to Vercel preview
+- `npm run deploy:prod` - Deploy to Vercel production
+
+## 🌟 Features
+
+### Marketing Automation
+- Campaign planning and execution tools
+- Performance tracking and analytics
+- Content template management
+- Team coordination workflows
+
+### Technical Features
+- RESTful API architecture
+- Static file serving
+- Markdown content processing
+- Security headers and CORS
+- Health monitoring endpoints
+- Vercel serverless compatibility
+
+## 📖 Documentation
+
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Complete deployment guide
+- [PROJECT-GETTING-STARTED.md](./PROJECT-GETTING-STARTED.md) - Project setup guide
+- [CAMPAIGN-EXECUTION-GUIDE.md](./CAMPAIGN-EXECUTION-GUIDE.md) - Marketing campaign guide
+- [TEAM-COORDINATION.md](./TEAM-COORDINATION.md) - Team workflow documentation
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -am 'Add new feature'`
+4. Push to branch: `git push origin feature/new-feature`
+5. Submit a Pull Request
+
+## 📄 License
+
+This project is licensed under the ISC License - see the package.json file for details.
+
+## 🆘 Support
+
+- Create an issue for bug reports or feature requests
+- Check [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment troubleshooting
+- Review existing documentation for setup questions
+
+---
+
+**Last Updated**: December 2024  
+**Version**: 1.0.0  
+**Node.js**: 18+  
+**Vercel Compatible**: ✅
+=======
+# 🚀 Deployment Guide
+
+## Deploying to Vercel
+
+This application is optimized for deployment on [Vercel](https://vercel.com), providing seamless serverless hosting for the Neural Wars Marketing Automation system.
+
+### Prerequisites
+
+- Node.js 18+ installed locally
+- Git repository hosted on GitHub, GitLab, or Bitbucket
+- Vercel account (free tier available)
+
+### Step-by-Step Deployment
+
+#### 1. Repository Connection
+
+1. **Fork/Clone this repository** to your GitHub account
+2. **Log in to Vercel** at [vercel.com](https://vercel.com)
+3. **Import Project:**
+   - Click "New Project" on your Vercel dashboard
+   - Select "Import Git Repository"
+   - Choose your forked repository
+   - Click "Import"
+
+#### 2. Project Configuration
+
+Vercel will automatically detect this as a Node.js project. Configure the following settings:
+
+**Build & Output Settings:**
+- **Framework Preset:** Other
+- **Build Command:** `npm run vercel-build` (auto-detected)
+- **Output Directory:** Leave empty (serverless functions)
+- **Install Command:** `npm install` (auto-detected)
+
+**Root Directory:**
+- Leave as default (root of repository)
+
+#### 3. Environment Variables Setup
+
+In your Vercel project settings, add the following environment variables:
+
+**Required Variables:**
+```
+NODE_ENV=production
+```
+
+**Optional Variables** (based on your needs):
+```
+PORT=3000
+LOG_LEVEL=info
+```
+
+**To add environment variables:**
+1. Go to your project settings in Vercel
+2. Navigate to "Environment Variables"
+3. Add each variable with appropriate values
+4. Select deployment environments (Production, Preview, Development)
+
+#### 4. Deploy
+
+1. **First Deployment:**
+   - Click "Deploy" to start the initial deployment
+   - Wait for build completion (typically 1-2 minutes)
+   - Vercel will provide a unique URL for your application
+
+2. **Verify Deployment:**
+   - Visit the provided URL
+   - Check `/health` endpoint for API status
+   - Test main application functionality
+
+#### 5. Custom Domain (Optional)
+
+1. **Add Domain:**
+   - Go to Project Settings → Domains
+   - Add your custom domain
+   - Follow DNS configuration instructions
+
+2. **SSL Certificate:**
+   - Automatically provisioned by Vercel
+   - No additional configuration required
+
+### Local Development Setup
+
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/YourUsername/Fractured-Code-Marketing.git
+   cd Fractured-Code-Marketing
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Environment setup:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your local settings
+   ```
+
+4. **Start development server:**
+   ```bash
+   npm run dev
+   # Server runs on http://localhost:3000
+   ```
+
+### Vercel-Specific Configuration
+
+This project includes optimized configuration for Vercel:
+
+**vercel.json Features:**
+- Serverless function configuration for Express.js app
+- Route handling for API endpoints and static files
+- Maximum function duration set to 30 seconds
+- Production environment variables
+
+**Package.json Optimizations:**
+- `vercel-build` script for deployment
+- Proper start script for serverless functions
+- Development dependencies excluded from production
+
+### Environment Variables Reference
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `NODE_ENV` | Application environment | Yes | `production` |
+| `PORT` | Server port (managed by Vercel) | No | Auto-assigned |
+| `LOG_LEVEL` | Logging verbosity | No | `info` |
+
+### Troubleshooting
+
+#### Common Issues
+
+**1. Build Failures:**
+- Verify Node.js version compatibility (18+)
+- Check package.json for missing dependencies
+- Review build logs in Vercel dashboard
+
+**2. Function Timeout:**
+- Default timeout is 30 seconds
+- Optimize slow API endpoints
+- Consider upgrading Vercel plan for longer timeouts
+
+**3. Static Files Not Loading:**
+- Verify public directory structure
+- Check Express.js static file configuration
+- Ensure proper CORS headers
+
+**4. Environment Variables:**
+- Variables must be set in Vercel dashboard
+- Restart deployment after variable changes
+- Use different values for Production/Preview/Development
+
+#### Getting Help
+
+1. **Vercel Documentation:** [vercel.com/docs](https://vercel.com/docs)
+2. **Application Logs:** Available in Vercel dashboard under "Functions"
+3. **Local Testing:** Use `vercel dev` for local Vercel environment simulation
+
+### Performance Optimization
+
+**Automatic Optimizations:**
+- Edge network distribution
+- Automatic HTTPS/SSL
+- Gzip compression
+- Static asset optimization
+
+**Manual Optimizations:**
+- Implement proper caching headers
+- Optimize database queries (if applicable)
+- Use CDN for large static assets
+- Monitor function execution times
+
+### Security Considerations
+
+**Built-in Security:**
+- Helmet.js middleware for security headers
+- CORS configuration
+- Environment variable encryption
+- Automatic security updates
+
+**Additional Security:**
+- Regular dependency updates
+- Input validation and sanitization
+- Rate limiting (implement as needed)
+- Monitor security alerts
+
+### Monitoring & Analytics
+
+**Vercel Analytics:**
+- Built-in performance monitoring
+- Function execution logs
+- Error tracking and alerts
+
+**Application Health:**
+- `/health` endpoint for monitoring
+- Uptime monitoring recommendations
+- Performance metrics tracking
+
+---
+
+### Quick Deploy Button
+
+Deploy this application to Vercel with one click:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/TheNeuralWars/Fractured-Code-Marketing&env=NODE_ENV&envDescription=Required%20environment%20variables&envLink=https://github.com/TheNeuralWars/Fractured-Code-Marketing%23environment-variables-reference)
+
+---
+>>>>>>> main
