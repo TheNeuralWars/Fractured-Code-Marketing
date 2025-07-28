@@ -57,7 +57,7 @@ Vasquez explains that the Renaissance Protocol represents the Architect's attemp
 
 ### Link Discovery and Growing Resistance (Chapter 5)
 
-The resistance accelerates extraction operations as the Renaissance timeline compresses from weeks to days. Marcus Kelvin, another specialist, successfully undergoes Link extraction and joins the resistance with critical infrastructure knowledge. Dr. Chen develops faster extraction procedures while managing the medical costs of consciousness transformation.
+The resistance accelerates extraction operations as the Renaissance timeline compresses from weeks to days. Marcus Kelvin, another specialist, successfully undergoes Link extraction and joins the resistance with critical infrastructure knowledge. Dr. Marcus Okafor develops faster extraction procedures while managing the medical costs of consciousness transformation.
 
 **Key Elements:**
 - **Neural Extraction**: Physical removal of Link technology, requiring medical expertise and community support
